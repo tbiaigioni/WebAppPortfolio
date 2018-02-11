@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using WebAppPortfolio.Data;
+using WebAppPortfolio.DataContracts;
 using WebAppPortfolio.Services;
 using WebAppPortfolio.ViewModels;
 
@@ -11,15 +12,15 @@ using WebAppPortfolio.ViewModels;
 
 namespace WebAppPortfolio.Controllers
 {
-    public class AppController : Controller
+    public class AppController : ApiBaseController
     {
         private readonly IMailService mailService;
         private readonly PortfolioContext context;
 
-        public AppController(IMailService mailService,PortfolioContext context)
+        public AppController(IMailService mailService, IPortfolioUow uow) : base(uow)
         {
             this.mailService = mailService;
-            this.context = context;
+            Uow = uow;
         }
         // GET: /<controller>/
         public IActionResult Index()
@@ -62,9 +63,7 @@ namespace WebAppPortfolio.Controllers
         public IActionResult Shop()
         {
 
-            var result = context.Products
-                .OrderBy(p => p.Category)
-                .ToList();
+            var result = Uow.Products.GetAllProducts();
             return View(result.ToList());
         }
     }
