@@ -143,17 +143,20 @@
                     <div class="side-content side-content-full">
                         <ul class="nav-main">
                             <li>
-                                <a class="active" href="start_backend.html"><i class="si si-speedometer"></i><span class="sidebar-mini-hide">Dashboard</span></a>
+                                <a class="active" asp-controller="App" asp-action="Index"><i class="si si-speedometer"></i><span class="sidebar-mini-hide">Home</span></a>
                             </li>
                             <li class="nav-main-heading"><span class="sidebar-mini-hide">Header</span></li>
                             <li>
-                                <a class="nav-submenu" data-toggle="nav-submenu" href="#"><i class="si si-wrench"></i><span class="sidebar-mini-hide">Dropdown</span></a>
+                                <a class="nav-submenu" data-toggle="nav-submenu" href="#"><i class="si si-wrench"></i><span class="sidebar-mini-hide">Test Pages</span></a>
                                 <ul>
                                     <li>
-                                        <a href="start_backend.html">Link #1</a>
+                                        <a asp-controller="App" asp-action="Index">Home</a>
                                     </li>
                                     <li>
-                                        <a href="start_backend.html">Link #2</a>
+                                        <a asp-controller="App" asp-action="Contact">Contact</a>
+                                    </li>
+                                    <li>
+                                        <a asp-controller="App" asp-action="About">About</a>
                                     </li>
                                 </ul>
                             </li>
@@ -232,5 +235,7 @@
     <script src="~/assets/js/oneui.min.js"></script>
 
     <!-- Page JS Plugins + Page JS Code -->
+
+    @RenderSection("scripts", false)
 </body>
 </html>

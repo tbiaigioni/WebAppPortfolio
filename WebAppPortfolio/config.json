@@ -1,0 +1,5 @@
+﻿{
+  "ConnectionStrings": {
+    "PortfolioConnectionString": "server=(localdb)\\ProjectsV13;Database=PortfolioDb;Integrated Security=true;MultipleActiveResultSets=true;"
+  }
+}

@@ -1,49 +1,79 @@
-﻿<!-- Page Header -->
-<div class="content bg-gray-lighter">
-    <div class="row items-push">
-        <div class="col-sm-7">
-            <h1 class="page-heading">
-                Title <small>Subtitle.</small>
-            </h1>
-        </div>
-        <div class="col-sm-5 text-right hidden-xs">
-            <ol class="breadcrumb push-10-t">
-                <li>Category</li>
-                <li><a class="link-effect" href="">Page</a></li>
-            </ol>
-        </div>
-    </div>
-</div>
-<!-- END Page Header -->
-<!-- Page Content -->
-<div class="content">
-    <!-- My Block -->
-    <div class="block">
-        <div class="block-header">
-            <ul class="block-options">
-                <li>
-                    <button type="button"><i class="si si-settings"></i></button>
-                </li>
-                <li>
-                    <button type="button" data-toggle="block-option" data-action="fullscreen_toggle"></button>
-                </li>
-                <li>
-                    <button type="button" data-toggle="block-option" data-action="refresh_toggle" data-action-mode="demo"><i class="si si-refresh"></i></button>
-                </li>
-                <li>
-                    <button type="button" data-toggle="block-option" data-action="content_toggle"></button>
-                </li>
-                <li>
-                    <button type="button" data-toggle="block-option" data-action="close"><i class="si si-close"></i></button>
-                </li>
-            </ul>
-            <h3 class="block-title">@ViewBag.Title</h3>
-        </div>
-        <div class="block-content">
-            <p>...</p>
-        </div>
-    </div>
-    <!-- END My Block -->
-</div>
+﻿@model ContactViewModel
 
-<!-- END Page Content -->
+@section scripts
+{
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}
+<!-- Contact Form -->
+<div class="bg-white">
+    <section class="content content-boxed">
+        <!-- Section Content -->
+        <div class="row items-push push-50-t push-30">
+            <div class="col-md-6 col-md-offset-3">
+                <form class="form-horizontal" asp-controller="App" asp-action="Contact" method="post">
+                    <div asp-validation-summary="ModelOnly"></div>
+                    <div class="form-group">
+                        <div class="col-xs-6">
+                            <div class="form-material form-material-primary">
+                                <input asp-for="FirstName" class="form-control" type="text" placeholder="Enter your firstname..">
+                                <label asp-for="FirstName" >Firstname</label>
+                                <span asp-validation-for="FirstName"></span>
+                            </div>
+                        </div>
+                        <div class="col-xs-6">
+                            <div class="form-material form-material-primary">
+                                <input asp-for="LastName" class="form-control" type="text" placeholder="Enter your lastname..">
+                                <label asp-for="LastName">Lastname</label>
+                                <span asp-validation-for="LastName"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-12">
+                            <div class="form-material form-material-primary">
+                                <input asp-for="Email" class="form-control" type="email" placeholder="Enter your email..">
+                                <label asp-for="Email">Email</label>
+                                <span asp-validation-for="Email"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-12">
+                            <div class="form-material form-material-primary">
+                                <select asp-for="Subject" class="form-control" size="1">
+                                    <option value="1">Support</option>
+                                    <option value="2">Billing</option>
+                                    <option value="3">Management</option>
+                                    <option value="4">Feature Request</option>
+                                </select>
+                                <label asp-for="Subject">Where?</label>
+                                <span asp-validation-for="Subject"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-12">
+                            <div class="form-material form-material-primary">
+                                <textarea asp-for="Msg" class="form-control" rows="7" placeholder="Enter your message.."></textarea>
+                                <label asp-for="Msg">Message</label>
+                                <span asp-validation-for="Msg"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-12 col-sm-6 col-sm-offset-3">
+                            <button class="btn btn-block btn-primary" type="submit"><i class="fa fa-send pull-left"></i> Send Message</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- END Section Content -->
+    </section>
+</div>
+<!-- END Contact Form -->
+
+
+
+
