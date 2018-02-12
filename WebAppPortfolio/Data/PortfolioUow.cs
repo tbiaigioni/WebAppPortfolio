@@ -19,6 +19,8 @@ namespace WebAppPortfolio.Data
 
 
         public IProductsRepository Products => GetRepository<IProductsRepository>();
+
+
         protected IRepositoryProvider RepositoryProvider { get; set; }
         private PortfolioContext context;
 
