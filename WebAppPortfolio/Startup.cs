@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 using WebAppPortfolio.Data;
 using WebAppPortfolio.DataContracts;
 using WebAppPortfolio.Helpers;
@@ -35,7 +36,8 @@ namespace WebAppPortfolio
 
             services.AddTransient<IMailService, NullMailService>();
             services.AddTransient<PortfolioSeeder>();
-            services.AddMvc();
+            services.AddMvc()
+                .AddJsonOptions(opt => opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
 
             services.AddScoped<IRepositoryProvider, RepositoryProvider>();
             services.AddScoped<IPortfolioUow, PortfolioUow>();

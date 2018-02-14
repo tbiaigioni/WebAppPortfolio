@@ -9,6 +9,9 @@ namespace WebAppPortfolio.Data
 {
     public class PortfolioUow : IPortfolioUow, IDisposable
     {
+        //Add Entity Repositories Here
+        public IProductsRepository Products => GetRepository<IProductsRepository>();
+        public IOrdersRepository Orders => GetRepository<IOrdersRepository>();
 
         public PortfolioUow(PortfolioContext context,IRepositoryProvider repositoryProvider)
         {
@@ -18,10 +21,13 @@ namespace WebAppPortfolio.Data
         }
 
 
-        public IProductsRepository Products => GetRepository<IProductsRepository>();
+        
 
 
         protected IRepositoryProvider RepositoryProvider { get; set; }
+
+        
+
         private PortfolioContext context;
 
         private T GetRepository<T>() where T : class

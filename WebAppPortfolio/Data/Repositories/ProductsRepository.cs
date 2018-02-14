@@ -10,22 +10,47 @@ namespace WebAppPortfolio.Data
 {
     public class ProductsRepository : EFRepository<Product>,IProductsRepository
     {
-        private readonly ILogger<ProductsRepository> logger;
+        //private readonly ILogger<ProductsRepository> logger;
 
-        public ProductsRepository(PortfolioContext dbContext,ILogger<ProductsRepository> logger) : base(dbContext)
+
+        public ProductsRepository(PortfolioContext dbContext) : base(dbContext)
         {
-            this.logger = logger;
+
         }
+
+
         
 
         public IQueryable<Product> GetAllProducts()
         {
-            return DbContext.Products.OrderBy(p => p.Title);
+            try
+            {
+               // logger.LogInformation($"Got All Products");
+                return DbContext.Products.OrderBy(p => p.Title);
+            }
+            catch (Exception ex)
+            {
+
+               // logger.LogError($"Failed Getting All Products : {ex}");
+                return null;
+            }
+            
         }
 
         public IQueryable<Product> GetProductsByCategory(string category)
         {
-            return DbContext.Products.Where(p => p.Category == category);
+
+            try
+            {
+                return DbContext.Products.Where(p => p.Category == category);
+            }
+            catch (Exception ex)
+            {
+
+                //logger.LogError($"Failed Getting Products By Category : {ex}");
+                return null;
+            }
+            
         }
     }
 }

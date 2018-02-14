@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,11 +12,13 @@ namespace WebAppPortfolio.Helpers
     {
         private readonly IDictionary<Type, Func<PortfolioContext, object>> repositoryFactories;
 
+
         private IDictionary<Type,Func<PortfolioContext,object>> GetPortfolioFactories()
         {
             return new Dictionary<Type, Func<PortfolioContext, object>>
             {
                 {typeof(IProductsRepository),dbContext=> new ProductsRepository(dbContext) },
+                {typeof(IOrdersRepository),dbContext=> new OrdersRepository(dbContext) },
             };
         }
 

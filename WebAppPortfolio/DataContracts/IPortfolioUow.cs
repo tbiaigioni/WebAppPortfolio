@@ -12,5 +12,6 @@ namespace WebAppPortfolio.DataContracts
 
 
         IProductsRepository Products { get; }
+        IOrdersRepository Orders { get; }
     }
 }
