@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
+using WebAppPortfolio.Data.Entities;
 using WebAppPortfolio.Entities;
 
 namespace WebAppPortfolio.Data
@@ -14,17 +16,39 @@ namespace WebAppPortfolio.Data
 
         private readonly PortfolioContext _ctx;
         private readonly IHostingEnvironment _hosting;
+        private readonly UserManager<PortfolioUser> _userManager;
 
-        public PortfolioSeeder(PortfolioContext ctx,IHostingEnvironment hosting)
+        public PortfolioSeeder(PortfolioContext ctx
+            ,IHostingEnvironment hosting
+            ,UserManager<PortfolioUser> userManager)
         {
             _ctx = ctx;
             _hosting = hosting;
+            _userManager = userManager;
         }
 
 
-        public void Seed()
+        public async Task Seed()
         {
             _ctx.Database.EnsureCreated();
+
+            var user = await _userManager.FindByEmailAsync("tbiagioni1983@gmail.com");
+            if (user == null)
+            {
+                user = new PortfolioUser()
+                {
+                    FirstName = "Tom",
+                    LastName = "Biagioni",
+                    UserName = "tbiagioni1983@gmail.com",
+                    Email = "tbiagioni1983@gmail.com"
+                };
+
+                var result = await _userManager.CreateAsync(user,"P@ssw0rd!");
+                if (result != IdentityResult.Success)
+                {
+                    throw new InvalidOperationException("Failed Creating User");
+                }
+            }
 
             if (_ctx.Products.Any()) return;
             //Create Sample Data
@@ -37,6 +61,7 @@ namespace WebAppPortfolio.Data
             {
                 OrderDate = DateTime.Now,
                 OrderNumber = "12345",
+                User = user,
                 Items = new List<OrderItem>()
                 {
                     new OrderItem()

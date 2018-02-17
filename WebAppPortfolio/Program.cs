@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using WebAppPortfolio.Data;
 
 namespace WebAppPortfolio
 {
@@ -14,7 +16,18 @@ namespace WebAppPortfolio
     {
         public static void Main(string[] args)
         {
-            BuildWebHost(args).Run();
+
+            var host = BuildWebHost(args);
+
+            using (var scope = host.Services.CreateScope())
+            {
+                // Retrieve your DbContext isntance here
+                var seeder = scope.ServiceProvider.GetService<PortfolioSeeder>();
+
+                // place your DB seeding code here
+                seeder.Seed().Wait();
+            }
+            host.Run();
         }
 
         public static IWebHost BuildWebHost(string[] args) =>

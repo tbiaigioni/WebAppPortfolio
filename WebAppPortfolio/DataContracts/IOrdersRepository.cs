@@ -9,7 +9,7 @@ namespace WebAppPortfolio.DataContracts
     public interface IOrdersRepository :IRepository<Order>
     {
 
-        IEnumerable<Order> GetAllOrders();
+        IEnumerable<Order> GetAllOrders(bool includeItems);
         Order GetOrderByOrderNumber(string orderNumber);
         Order GetOrderById(int id);
         IEnumerable<Order> GetOrdersByOrderDate(DateTime date);

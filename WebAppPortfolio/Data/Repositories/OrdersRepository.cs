@@ -19,15 +19,22 @@ namespace WebAppPortfolio.Data
 
 
 
-        public IEnumerable<Order> GetAllOrders()
+        public IEnumerable<Order> GetAllOrders(bool includeItems)
         {
 
             try
             {
+                if (includeItems)
+                {
+                    return DbContext.Orders
+                        .Include(o => o.Items)
+                        .ThenInclude(i => i.Product)
+                        .ToList();
+                }
+
                 return DbContext.Orders
-                                .Include(o => o.Items)
-                                .ThenInclude(i => i.Product)
-                                .ToList();
+                    .ToList();
+
             }
             catch (Exception ex)
             {

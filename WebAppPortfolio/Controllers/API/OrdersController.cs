@@ -26,12 +26,13 @@ namespace WebAppPortfolio.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get()
+        public IActionResult Get(bool includeItems = true)
         {
 
             try
             {
-                return Ok(mapper.Map<IEnumerable<Order>, IEnumerable<OrderViewModel>>(Uow.Orders.GetAllOrders()));
+                var results = Uow.Orders.GetAllOrders(includeItems);
+                return Ok(mapper.Map<IEnumerable<Order>, IEnumerable<OrderViewModel>>(results));
             }
             catch (Exception ex)
             {

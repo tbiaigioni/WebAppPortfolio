@@ -6,11 +6,13 @@ using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using WebAppPortfolio.Data;
+using WebAppPortfolio.Data.Entities;
 using WebAppPortfolio.DataContracts;
 using WebAppPortfolio.Helpers;
 using WebAppPortfolio.Services;
@@ -29,16 +31,29 @@ namespace WebAppPortfolio
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddIdentity<PortfolioUser, IdentityRole>(cfg =>
+            {
+                cfg.User.RequireUniqueEmail = true;
+
+            })
+                .AddEntityFrameworkStores<PortfolioContext>();
 
             services.AddDbContext<PortfolioContext>(cfg  =>
             {
                 cfg.UseSqlServer(config.GetConnectionString("PortfolioCOnnectionString"));
             });
 
-            services.AddAutoMapper();
+            services.AddTransient<PortfolioSeeder>();
+
+            //services.AddSingleton<IMapper>(new Mapper(new MapperConfiguration(cfg => cfg.AddProfile<WebAppProfolioMappingProfile>())));
+            AutoMapper.ServiceCollectionExtensions.UseStaticRegistration = false;
+            if (services.All(a => a.ImplementationType != typeof(IMapper)))
+            {
+                services.AddAutoMapper();
+            }
 
             services.AddTransient<IMailService, NullMailService>();
-            services.AddTransient<PortfolioSeeder>();
+            
             services.AddMvc()
                         .AddJsonOptions(opt => opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
 
@@ -65,6 +80,7 @@ namespace WebAppPortfolio
 
             app.UseStaticFiles();
 
+            app.UseAuthentication();
 
             app.UseMvc(cfg =>
             {
@@ -73,15 +89,15 @@ namespace WebAppPortfolio
                     , new { controller = "App", Action = "Index" });
             });
 
-            if (env.IsDevelopment())
-            {
-                using (var scope = app.ApplicationServices.CreateScope())
-                {
-                    var seeder = scope.ServiceProvider.GetService<PortfolioSeeder>();
+            //if (env.IsDevelopment())
+            //{
+            //    using (var scope = app.ApplicationServices.CreateScope())
+            //    {
+            //        var seeder = scope.ServiceProvider.GetService<PortfolioSeeder>();
 
-                    seeder.Seed();
-                }
-            }
+            //        seeder.Seed().Wait();
+            //    }
+            //}
         }
     }
 }
