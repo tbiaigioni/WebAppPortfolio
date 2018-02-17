@@ -13,11 +13,11 @@ namespace WebAppPortfolio.Helpers
         public PortfolioContext DbContext { get; set; }
 
         protected Dictionary<Type,object> Repositories { get; private set; }
-        private readonly RepositoryFactories repositoryFactories;
+        private readonly RepositoryFactories _repositoryFactories;
 
         public RepositoryProvider(RepositoryFactories repositoryFactories)
         {
-            this.repositoryFactories = repositoryFactories;
+            this._repositoryFactories = repositoryFactories;
 
             Repositories = new Dictionary<Type, object>();
 
@@ -39,7 +39,7 @@ namespace WebAppPortfolio.Helpers
 
         public IRepository<T> GetRepositoryForEntityType<T>() where T : class
         {
-            return GetRepository<IRepository<T>>(repositoryFactories.GetRepositoryFactoryForEntityType<T>());
+            return GetRepository<IRepository<T>>(_repositoryFactories.GetRepositoryFactoryForEntityType<T>());
         }
 
         public void SetRepository<T>(T repository)
@@ -49,7 +49,7 @@ namespace WebAppPortfolio.Helpers
 
         protected virtual T MakeRepository<T>(Func<PortfolioContext, object> factory, PortfolioContext context)
         {
-            var f = factory ?? repositoryFactories.GetRepositoryFactory<T>();
+            var f = factory ?? _repositoryFactories.GetRepositoryFactory<T>();
             if (f == null)
             {
                 throw new NotImplementedException("No factory for repository type," + typeof(T).FullName);

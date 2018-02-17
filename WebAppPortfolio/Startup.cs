@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -34,11 +35,14 @@ namespace WebAppPortfolio
                 cfg.UseSqlServer(config.GetConnectionString("PortfolioCOnnectionString"));
             });
 
+            services.AddAutoMapper();
+
             services.AddTransient<IMailService, NullMailService>();
             services.AddTransient<PortfolioSeeder>();
             services.AddMvc()
-                .AddJsonOptions(opt => opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
+                        .AddJsonOptions(opt => opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
 
+            
             services.AddScoped<IRepositoryProvider, RepositoryProvider>();
             services.AddScoped<IPortfolioUow, PortfolioUow>();
             services.AddSingleton<RepositoryFactories>();

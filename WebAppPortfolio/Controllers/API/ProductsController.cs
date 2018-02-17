@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -12,12 +13,15 @@ namespace WebAppPortfolio.Controllers.API
     [Route("api/[Controller]")]
     public class ProductsController : ApiBaseController
     {
-        private readonly ILogger<ProductsController> logger;
+        private readonly ILogger<ProductsController> _logger;
 
-        public ProductsController(IPortfolioUow uow,ILogger<ProductsController> logger) : base(uow)
+        public ProductsController(IPortfolioUow uow
+                                 ,IMapper mapper
+                                 ,ILogger<ProductsController> logger) 
+                                 : base(uow,mapper)
         {
 
-            this.logger = logger;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -31,7 +35,7 @@ namespace WebAppPortfolio.Controllers.API
             catch (Exception ex)
             {
 
-                logger.LogError($"Failed to Get products: {ex}");
+                _logger.LogError($"Failed to Get products: {ex}");
                 return BadRequest("Failed to get products");
 
             }

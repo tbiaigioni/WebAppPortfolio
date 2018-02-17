@@ -10,7 +10,7 @@ namespace WebAppPortfolio.Helpers
 {
     public class RepositoryFactories
     {
-        private readonly IDictionary<Type, Func<PortfolioContext, object>> repositoryFactories;
+        private readonly IDictionary<Type, Func<PortfolioContext, object>> _repositoryFactories;
 
 
         private IDictionary<Type,Func<PortfolioContext,object>> GetPortfolioFactories()
@@ -24,19 +24,18 @@ namespace WebAppPortfolio.Helpers
 
         public RepositoryFactories()
         {
-            this.repositoryFactories = GetPortfolioFactories();
+            this._repositoryFactories = GetPortfolioFactories();
         }
 
         public RepositoryFactories(IDictionary<Type,Func<PortfolioContext,object>> factories)
         {
-            repositoryFactories = factories;
+            _repositoryFactories = factories;
         }
 
 
         public Func<PortfolioContext,object> GetRepositoryFactory<T>()
         {
-            Func<PortfolioContext, object> factory;
-            repositoryFactories.TryGetValue(typeof(T), out factory);
+            _repositoryFactories.TryGetValue(typeof(T), out var factory);
             return factory;
         }
 

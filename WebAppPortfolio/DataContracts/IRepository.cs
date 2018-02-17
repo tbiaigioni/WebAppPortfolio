@@ -8,7 +8,7 @@ namespace WebAppPortfolio.DataContracts
     public interface IRepository<T> where T : class
     {
 
-        IQueryable<T> GetAll();
+        IEnumerable<T> GetAll();
 
         T GetById(int id);
         void Add(T entity);

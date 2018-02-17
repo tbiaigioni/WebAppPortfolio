@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using WebAppPortfolio.Data;
 using WebAppPortfolio.DataContracts;
@@ -14,13 +15,11 @@ namespace WebAppPortfolio.Controllers
 {
     public class AppController : ApiBaseController
     {
-        private readonly IMailService mailService;
-        private readonly PortfolioContext context;
+        private readonly IMailService _mailService;
 
-        public AppController(IMailService mailService, IPortfolioUow uow) : base(uow)
+        public AppController(IMailService mailService, IPortfolioUow uow,IMapper mapper) : base(uow,mapper)
         {
-            this.mailService = mailService;
-            Uow = uow;
+            _mailService = mailService;
         }
         // GET: /<controller>/
         public IActionResult Index()
@@ -42,7 +41,7 @@ namespace WebAppPortfolio.Controllers
 
             if (ModelState.IsValid)
             {
-                mailService.SendMessage(model.FirstName, model.Subject, model.Msg);
+                _mailService.SendMessage(model.FirstName, model.Subject, model.Msg);
                 ViewBag.UserMessage = "Mail Sent";
                 ModelState.Clear();
             }

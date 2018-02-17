@@ -54,7 +54,7 @@ namespace WebAppPortfolio.Data
             Delete(entity);
         }
 
-        public IQueryable<T> GetAll()
+        public IEnumerable<T> GetAll()
         {
             return DbSet;
         }

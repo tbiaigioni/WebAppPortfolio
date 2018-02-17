@@ -12,48 +12,45 @@ namespace WebAppPortfolio.Data
     public class PortfolioSeeder
     {
 
-        private readonly PortfolioContext ctx;
-        private readonly IHostingEnvironment hosting;
+        private readonly PortfolioContext _ctx;
+        private readonly IHostingEnvironment _hosting;
 
         public PortfolioSeeder(PortfolioContext ctx,IHostingEnvironment hosting)
         {
-            this.ctx = ctx;
-            this.hosting = hosting;
+            _ctx = ctx;
+            _hosting = hosting;
         }
 
 
         public void Seed()
         {
-            ctx.Database.EnsureCreated();
+            _ctx.Database.EnsureCreated();
 
-            if (!ctx.Products.Any())
+            if (_ctx.Products.Any()) return;
+            //Create Sample Data
+            var filepath = Path.Combine(_hosting.ContentRootPath,"Data/art.json");
+            var json = File.ReadAllText(filepath);
+            var products = JsonConvert.DeserializeObject<IEnumerable<Product>>(json);
+            _ctx.Products.AddRange(products);
+
+            var order = new Order()
             {
-                //Create Sample Data
-                var filepath = Path.Combine(hosting.ContentRootPath,"Data/art.json");
-                var json = File.ReadAllText(filepath);
-                var products = JsonConvert.DeserializeObject<IEnumerable<Product>>(json);
-                ctx.Products.AddRange(products);
-
-                var order = new Order()
+                OrderDate = DateTime.Now,
+                OrderNumber = "12345",
+                Items = new List<OrderItem>()
                 {
-                    OrderDate = DateTime.Now,
-                    OrderNumber = "12345",
-                    Items = new List<OrderItem>()
+                    new OrderItem()
                     {
-                        new OrderItem()
-                        {
                         Product = products.First(),
                         Quantity = 5,
                         UnitPrice = products.First().Price
-                        }
-
                     }
-                };
 
-                ctx.Orders.Add(order);
-                ctx.SaveChanges();
+                }
+            };
 
-            }
+            _ctx.Orders.Add(order);
+            _ctx.SaveChanges();
         }
     }
 }

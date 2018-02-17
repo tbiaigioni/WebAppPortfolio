@@ -15,7 +15,7 @@ namespace WebAppPortfolio.Data
 
         public PortfolioUow(PortfolioContext context,IRepositoryProvider repositoryProvider)
         {
-            this.context = context;
+            this._context = context;
             repositoryProvider.DbContext = context;
             RepositoryProvider = repositoryProvider;
         }
@@ -28,7 +28,7 @@ namespace WebAppPortfolio.Data
 
         
 
-        private PortfolioContext context;
+        private readonly PortfolioContext _context;
 
         private T GetRepository<T>() where T : class
         {
@@ -37,7 +37,7 @@ namespace WebAppPortfolio.Data
 
         public void Commit()
         {
-            context.SaveChanges();
+            _context.SaveChanges();
         }
 
         public void Dispose()
@@ -51,7 +51,7 @@ namespace WebAppPortfolio.Data
 
             if (disposing)
             {
-                context?.Dispose();
+                _context?.Dispose();
             }
 
         }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,10 +12,12 @@ namespace WebAppPortfolio.Controllers
     {
 
         protected IPortfolioUow Uow { get; set; }
+        protected IMapper mapper;
 
-        public ApiBaseController(IPortfolioUow uow)
+        public ApiBaseController(IPortfolioUow uow,IMapper mapper)
         {
             Uow = uow;
+            this.mapper = mapper;
         }
 
     }

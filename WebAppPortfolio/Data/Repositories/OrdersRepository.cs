@@ -19,12 +19,15 @@ namespace WebAppPortfolio.Data
 
 
 
-        public IQueryable<Order> GetAllOrders()
+        public IEnumerable<Order> GetAllOrders()
         {
 
             try
             {
-                return DbContext.Orders.Include(o => o.Items).ThenInclude(i => i.Product).OrderBy(o => o.OrderNumber);
+                return DbContext.Orders
+                                .Include(o => o.Items)
+                                .ThenInclude(i => i.Product)
+                                .ToList();
             }
             catch (Exception ex)
             {
@@ -35,12 +38,16 @@ namespace WebAppPortfolio.Data
             
         }
 
-        public IQueryable<Order> GetOrderByOrderNumber(string orderNumber)
+        public Order GetOrderByOrderNumber(string orderNumber)
         {
 
             try
             {
-                return DbContext.Orders.Where(o => o.OrderNumber == orderNumber);
+                return DbContext.Orders
+                    .Where(o => o.OrderNumber == orderNumber)
+                    .Include(o => o.Items)
+                    .ThenInclude(i => i.Product)
+                    .FirstOrDefault();
             }
             catch (Exception ex)
             {
@@ -50,8 +57,27 @@ namespace WebAppPortfolio.Data
             }
             
         }
+        public Order GetOrderById(int id)
+        {
 
-        public IQueryable<Order> GetOrderByOrderDate(DateTime date)
+            try
+            {
+                return DbContext.Orders
+                    .Where(o => o.Id == id)
+                    .Include(o => o.Items)
+                    .ThenInclude(i => i.Product)
+                    .FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+
+                // logger.LogError($"Failed Getting Order By Order Number : {ex}");
+                return null;
+            }
+
+        }
+
+        public IEnumerable<Order> GetOrdersByOrderDate(DateTime date)
         {
 
             try
