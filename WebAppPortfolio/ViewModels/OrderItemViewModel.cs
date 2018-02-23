@@ -24,6 +24,6 @@ namespace WebAppPortfolio.ViewModels
 
         public string ProductArtist { get; set; }
 
-        public int ProductArtId { get; set; }
+        //public int ProductArtId { get; set; }
     }
 }

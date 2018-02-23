@@ -144,6 +144,15 @@
                         <ul class="nav-main">
                             <li>
                                 <a class="active" asp-controller="App" asp-action="Index"><i class="si si-speedometer"></i><span class="sidebar-mini-hide">Home</span></a>
+                                @if (User.Identity.IsAuthenticated)
+    {
+                            <a class="active" asp-controller="Account" asp-action="Logout"><i class="si si-speedometer"></i><span class="sidebar-mini-hide">Logout</span></a>
+}
+else
+{
+                            <a class="active" asp-controller="Account" asp-action="Login"><i class="si si-speedometer"></i><span class="sidebar-mini-hide">Login</span></a>
+}
+
                             </li>
                             <li class="nav-main-heading"><span class="sidebar-mini-hide">Header</span></li>
                             <li>
@@ -174,16 +183,6 @@
         <!-- END Sidebar -->
         <!-- Header -->
         <header id="header-navbar" class="content-mini content-mini-full">
-            <!-- Header Navigation Right -->
-            <ul class="nav-header pull-right">
-                <li>
-                    <!-- Layout API, functionality initialized in App() -> uiLayoutApi() -->
-                    <button class="btn btn-default" data-toggle="layout" data-action="side_overlay_toggle" type="button">
-                        <i class="fa fa-tasks"></i>
-                    </button>
-                </li>
-            </ul>
-            <!-- END Header Navigation Right -->
             <!-- Header Navigation Left -->
             <ul class="nav-header pull-left">
                 <li class="hidden-md hidden-lg">

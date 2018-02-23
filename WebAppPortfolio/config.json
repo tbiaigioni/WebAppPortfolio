@@ -4,7 +4,13 @@
   },
   "Logging": {
     "LogLevel": {
-      "Default" :  "Warning"
+      "Default": "Warning"
     }
-  }
+  },
+
+  "Tokens": {
+    "key": ":LKFJ:LDKJFIEVONo;eefhd;hf4",
+    "Issuer": "localhost",
+    "Audience": "localhost" 
+  } 
 }

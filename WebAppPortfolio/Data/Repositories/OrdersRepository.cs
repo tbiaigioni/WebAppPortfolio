@@ -45,6 +45,32 @@ namespace WebAppPortfolio.Data
             
         }
 
+        public IEnumerable<Order> GetAllOrdersByUser(string username,bool includeItems)
+        {
+            try
+            {
+                if (includeItems)
+                {
+                    return DbContext.Orders
+                        .Where(o => o.User.UserName == username)
+                        .Include(o => o.Items)
+                        .ThenInclude(i => i.Product)
+                        .ToList();
+                }
+
+                return DbContext.Orders
+                    .Where(o => o.User.UserName == username)
+                    .ToList();
+
+            }
+            catch (Exception ex)
+            {
+
+                //logger.LogError($"Failed Getting All Orders : {ex}");
+                return null;
+            }
+        }
+
         public Order GetOrderByOrderNumber(string orderNumber)
         {
 
