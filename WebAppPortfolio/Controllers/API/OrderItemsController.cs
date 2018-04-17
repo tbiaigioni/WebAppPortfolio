@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using WebAppPortfolio.DataContracts;
@@ -12,6 +14,7 @@ using WebAppPortfolio.ViewModels;
 namespace WebAppPortfolio.Controllers.API
 {
     [Route("/api/orders/{order.id}/items")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class OrderItemsController : ApiBaseController
     {
         private readonly ILogger<OrderItemsController> _logger;
@@ -30,7 +33,9 @@ namespace WebAppPortfolio.Controllers.API
 
             try
             {
-                var order = Uow.Orders.GetOrderById(orderId);
+
+
+                var order = Uow.Orders.GetOrderById(User.Identity.Name, orderId);
                 if (order != null)
                     return Ok(mapper.Map<IEnumerable<OrderItem>, IEnumerable<OrderItemViewModel>>(order.Items));
 
@@ -49,7 +54,7 @@ namespace WebAppPortfolio.Controllers.API
         {
             try
             {
-                var order = Uow.Orders.GetOrderById(id);
+                var order = Uow.Orders.GetOrderById(User.Identity.Name,id);
                 var item = order?.Items.FirstOrDefault(i => i.Id == id);
                 if (item != null)
                 {

@@ -1,6 +1,6 @@
 ﻿{
   "ConnectionStrings": {
-    "PortfolioConnectionString": "server=(localdb)\\ProjectsV13;Database=PortfolioDb;Integrated Security=true;MultipleActiveResultSets=true;"
+    "PortfolioConnectionString": "Data Source=mi3-wsq3.a2hosting.com;Initial Catalog=halcyonp_Db;Integrated Security=False;User ID=halcyonp_admin;Password=K4yl33m3g4n!;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"
   },
   "Logging": {
     "LogLevel": {

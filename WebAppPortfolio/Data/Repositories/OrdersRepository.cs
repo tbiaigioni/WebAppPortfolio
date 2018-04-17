@@ -71,13 +71,13 @@ namespace WebAppPortfolio.Data
             }
         }
 
-        public Order GetOrderByOrderNumber(string orderNumber)
+        public Order GetOrderByOrderNumber(string username,string orderNumber)
         {
 
             try
             {
                 return DbContext.Orders
-                    .Where(o => o.OrderNumber == orderNumber)
+                    .Where(o => o.OrderNumber == orderNumber && o.User.UserName == username)
                     .Include(o => o.Items)
                     .ThenInclude(i => i.Product)
                     .FirstOrDefault();
@@ -90,13 +90,13 @@ namespace WebAppPortfolio.Data
             }
             
         }
-        public Order GetOrderById(int id)
+        public Order GetOrderById(string username, int id)
         {
 
             try
             {
                 return DbContext.Orders
-                    .Where(o => o.Id == id)
+                    .Where(o => o.Id == id && o.User.UserName == username)
                     .Include(o => o.Items)
                     .ThenInclude(i => i.Product)
                     .FirstOrDefault();
@@ -124,5 +124,6 @@ namespace WebAppPortfolio.Data
             }
            
         }
+
     }
 }

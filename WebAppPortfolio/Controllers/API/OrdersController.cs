@@ -5,8 +5,10 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using WebAppPortfolio.Data.Entities;
 using WebAppPortfolio.DataContracts;
 using WebAppPortfolio.Entities;
 using WebAppPortfolio.ViewModels;
@@ -18,14 +20,16 @@ namespace WebAppPortfolio.Controllers
     public class OrdersController : ApiBaseController
     {
         private readonly ILogger<OrdersController> _logger;
+        private readonly UserManager<PortfolioUser> _userManager;
 
         public OrdersController(IPortfolioUow uow
                                 ,IMapper mapper
-                                ,ILogger<OrdersController> logger) 
+                                ,ILogger<OrdersController> logger
+            ,UserManager<PortfolioUser> userManager) 
                                 : base(uow,mapper)
         {
             _logger = logger;
-
+            _userManager = userManager;
         }
 
         [HttpGet]
@@ -56,7 +60,7 @@ namespace WebAppPortfolio.Controllers
             try
             {
 
-                var order = mapper.Map<Order,OrderViewModel>((Uow.Orders.GetOrderByOrderNumber(orderNumber)));
+                var order = mapper.Map<Order,OrderViewModel>((Uow.Orders.GetOrderByOrderNumber(User.Identity.Name,orderNumber)));
                 if (order != null)
                 {
                     return Ok(order);
@@ -82,7 +86,7 @@ namespace WebAppPortfolio.Controllers
             try
             {
 
-                var order = Uow.Orders.GetOrderById(id);
+                var order = Uow.Orders.GetOrderById(User.Identity.Name, id);
                 if (order != null)
                 {
                     return Ok(mapper.Map<Order,OrderViewModel>(order));
@@ -101,7 +105,7 @@ namespace WebAppPortfolio.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody]OrderViewModel model)
+        public async Task<IActionResult> Post([FromBody]OrderViewModel model)
         {
             try
             {
@@ -115,6 +119,9 @@ namespace WebAppPortfolio.Controllers
                 }
 
                 if (!ModelState.IsValid) return BadRequest(ModelState);
+
+                var currentUser = await _userManager.FindByNameAsync(User.Identity.Name);
+                newOrder.User = currentUser;
 
                 Uow.Orders.Add(newOrder);
                 Uow.Commit();

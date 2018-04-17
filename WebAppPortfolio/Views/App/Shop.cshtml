@@ -1,87 +1,102 @@
 ﻿@model IEnumerable<Product>
 
 
+@section Scripts{
+}
+<script src="~/ClientApp/dist/inline.bundle.js"></script>
+<script src="~/ClientApp/dist/polyfills.bundle.js"></script>
+<script src="~/ClientApp/dist/styles.bundle.js"></script>
+<script src="~/ClientApp/dist/vendor.bundle.js"></script>
+<script src="~/ClientApp/dist/main.bundle.js"></script>
 @{
     ViewData["Title"] = "Shop";
 }
-
 <h2>Shop</h2>
+<the-shop></the-shop>
 
 
-<!-- Sort and Show Filters -->
-<div class="form-inline clearfix">
-    <select id="ecom-results-show" name="ecom-results-show" class="form-control push pull-right" size="1">
-        <option value="0" disabled selected>SHOW</option>
-        <option value="9">9</option>
-        <option value="18">18</option>
-        <option value="36">36</option>
-        <option value="72">72</option>
-    </select>
-    <select id="ecom-results-sort" name="ecom-results-sort" class="form-control push" size="1">
-        <option value="0" disabled selected>SORT BY</option>
-        <option value="1">Popularity</option>
-        <option value="2">Name (A to Z)</option>
-        <option value="3">Name (Z to A)</option>
-        <option value="4">Price (Lowest to Highest)</option>
-        <option value="5">Price (Highest to Lowest)</option>
-        <option value="6">Sales (Lowest to Highest)</option>
-        <option value="7">Sales (Highest to Lowest)</option>
-    </select>
-</div>
-<!-- END Sort and Show Filters -->
-<!-- Hero Content -->
-<div class="bg-primary-dark-op">
-    <section class="content content-full content-boxed overflow-hidden">
-        <!-- Section Content -->
-        <div class="push-100-t push-50 text-center">
-            <h1 class="h2 text-white push-10">@ViewData["Title"]</h1>
-            <h2 class="h5 text-white-op">Count: @Model.Count()</h2>
-        </div>
-        <!-- END Section Content -->
-    </section>
-</div>
-<!-- END Hero Content -->
-<div class="row">
 
-    <!-- END Content -->
-    @foreach (var p in Model)
-    {
-    <div class="col-sm-6 col-md-3 col-lg-2">
-        <div class="block">
-            <div class="img-container">
-                <img class="img-responsive" src=@Url.Content("~/img/" + p.ArtId + ".jpg") alt="">
-                <div class="img-options">
-                    <div class="img-options-content">
-                        <div class="push-20">
-                            <a class="btn btn-sm btn-default">View</a>
-                            <a class="btn btn-sm btn-default" href="javascript:void(0)">
-                                <i class="fa fa-plus"></i> Add to cart
-                            </a>
-                        </div>
-                        <div class="text-warning">
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <span class="text-white">(998)</span>
+
+
+
+
+@*
+
+
+    <!-- Sort and Show Filters -->
+    <div class="form-inline clearfix">
+        <select id="ecom-results-show" name="ecom-results-show" class="form-control push pull-right" size="1">
+            <option value="0" disabled selected>SHOW</option>
+            <option value="9">9</option>
+            <option value="18">18</option>
+            <option value="36">36</option>
+            <option value="72">72</option>
+        </select>
+        <select id="ecom-results-sort" name="ecom-results-sort" class="form-control push" size="1">
+            <option value="0" disabled selected>SORT BY</option>
+            <option value="1">Popularity</option>
+            <option value="2">Name (A to Z)</option>
+            <option value="3">Name (Z to A)</option>
+            <option value="4">Price (Lowest to Highest)</option>
+            <option value="5">Price (Highest to Lowest)</option>
+            <option value="6">Sales (Lowest to Highest)</option>
+            <option value="7">Sales (Highest to Lowest)</option>
+        </select>
+    </div>
+    <!-- END Sort and Show Filters -->
+    <!-- Hero Content -->
+    <div class="bg-primary-dark-op">
+        <section class="content content-full content-boxed overflow-hidden">
+            <!-- Section Content -->
+            <div class="push-100-t push-50 text-center">
+                <h1 class="h2 text-white push-10">@ViewData["Title"]</h1>
+                <h2 class="h5 text-white-op">Count: @Model.Count()</h2>
+            </div>
+            <!-- END Section Content -->
+        </section>
+    </div>
+    <!-- END Hero Content -->
+    <div class="row">
+
+        <!-- END Content -->
+        @foreach (var p in Model)
+        {
+        <div class="col-sm-6 col-md-3 col-lg-2">
+            <div class="block">
+                <div class="img-container">
+                    <img class="img-responsive" src=@Url.Content("~/img/" + p.ArtId + ".jpg") alt="">
+                    <div class="img-options">
+                        <div class="img-options-content">
+                            <div class="push-20">
+                                <a class="btn btn-sm btn-default">View</a>
+                                <a class="btn btn-sm btn-default" href="javascript:void(0)">
+                                    <i class="fa fa-plus"></i> Add to cart
+                                </a>
+                            </div>
+                            <div class="text-warning">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <span class="text-white">(998)</span>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="block-content">
-                <div class="push-10">
-                    <div class="h4 font-w600 text-success pull-right push-10-l">@p.Price</div>
-                    <a class="h5" href="base_pages_ecom_store_product.html">@p.Title</a>
+                <div class="block-content">
+                    <div class="push-10">
+                        <div class="h4 font-w600 text-success pull-right push-10-l">@p.Price</div>
+                        <a class="h5" href="base_pages_ecom_store_product.html">@p.Title</a>
 
+                    </div>
+                    <a class="h6" href="base_pages_ecom_store_product.html">@p.Artist</a>
+                    <p class="text-muted">@p.Category</p>
                 </div>
-                <a class="h6" href="base_pages_ecom_store_product.html">@p.Artist</a>
-                <p class="text-muted">@p.Category</p>
             </div>
         </div>
-    </div>
 
-            }
-       
-    </div>
+                }
+
+        </div>*@
 
