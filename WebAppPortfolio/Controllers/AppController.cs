@@ -62,9 +62,7 @@ namespace WebAppPortfolio.Controllers
         [Authorize]
         public IActionResult Shop()
         {
-
-            var result = Uow.Products.GetAllProducts();
-            return View(result.ToList());
+            return View();
         }
     }
 }
