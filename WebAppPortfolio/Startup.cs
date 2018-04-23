@@ -11,7 +11,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Mvc.Versioning;
+using Microsoft.AspNetCore.Mvc.Versioning.Conventions;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using WebAppPortfolio.Data;
@@ -28,35 +31,37 @@ namespace WebAppPortfolio
         private readonly IHostingEnvironment _env;
 
         public Startup(IConfiguration config
-        ,IHostingEnvironment env)
+            , IHostingEnvironment env)
         {
             _config = config;
             _env = env;
         }
+
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddIdentity<PortfolioUser, IdentityRole>(cfg =>
-            {
-                cfg.User.RequireUniqueEmail = true;
-
-            })
+            services.AddIdentity<PortfolioUser, IdentityRole>(cfg => { cfg.User.RequireUniqueEmail = true; })
                 .AddEntityFrameworkStores<PortfolioContext>();
 
             services.AddAuthentication()
                 .AddCookie()
                 .AddJwtBearer(cfg =>
                 {
+                    //AutomaticAuthenticate = true,
+                    //AutomaticChallenge = true,
                     cfg.TokenValidationParameters = new TokenValidationParameters()
                     {
                         ValidIssuer = _config["Tokens:Issuer"],
                         ValidAudience = _config["Tokens:Audience"],
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Tokens:key"]))
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Tokens:key"])),
+                        ValidateIssuerSigningKey = true,
+                        ValidateLifetime = true,
+                        
                     };
                 });
 
-            services.AddDbContext<PortfolioContext>(cfg  =>
+            services.AddDbContext<PortfolioContext>(cfg =>
             {
                 //cfg.UseSqlServer(_config.GetConnectionString("PortfolioCOnnectionString"));
                 cfg.UseSqlServer(_config.GetConnectionString("DevConnectionString"));
@@ -72,7 +77,7 @@ namespace WebAppPortfolio
             }
 
             services.AddTransient<IMailService, NullMailService>();
-            
+
             services.AddMvc(opt =>
                 {
                     if (_env.IsProduction())
@@ -80,20 +85,54 @@ namespace WebAppPortfolio
                         opt.Filters.Add(new RequireHttpsAttribute());
                     }
                 })
-                        .AddJsonOptions(opt => opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
+                .AddJsonOptions(opt => opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
 
-            
+
             services.AddScoped<IRepositoryProvider, RepositoryProvider>();
             services.AddScoped<IPortfolioUow, PortfolioUow>();
             services.AddSingleton<RepositoryFactories>();
 
+            services.AddApiVersioning(cfg =>
+            {
+                cfg.DefaultApiVersion = new ApiVersion(1, 1);
+                cfg.AssumeDefaultVersionWhenUnspecified = true;
+                cfg.ReportApiVersions = true;
+                cfg.ApiVersionReader = new HeaderApiVersionReader("X-MyCodeCamp-Version");
 
+                //cfg.Conventions.Controller<TalksController>()
+                //  .HasApiVersion(new ApiVersion(1, 0))
+                //  .HasApiVersion(new ApiVersion(1, 1))
+                //  .HasApiVersion(new ApiVersion(2, 0))
+                //  .Action(m => m.Post(default(string), default(int), default(TalkModel)))
+                //    .MapToApiVersion(new ApiVersion(1, 1));
+            });
+
+            services.AddCors(cfg =>
+            {
+                cfg.AddPolicy("Biagioni", bldr =>
+                {
+                    bldr.AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .WithOrigins("http://HalcyonPattern.com");
+                });
+
+                cfg.AddPolicy("AnyGET", bldr =>
+                {
+                    bldr.AllowAnyHeader()
+                        .WithMethods("GET")
+                        .AllowAnyOrigin();
+                });
+            });
+            services.AddAuthorization(cfg =>
+            {
+                cfg.AddPolicy("SuperUsers", p => p.RequireClaim("SuperUser", "True"));
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            if(env.IsDevelopment())
+            if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
@@ -101,8 +140,9 @@ namespace WebAppPortfolio
             {
                 app.UseExceptionHandler("/error");
             }
-            
 
+            loggerFactory.AddConsole(_config.GetSection("Logging"));
+            loggerFactory.AddDebug();
             app.UseStaticFiles();
 
             app.UseAuthentication();
@@ -111,7 +151,7 @@ namespace WebAppPortfolio
             {
                 cfg.MapRoute("Default"
                     , "{controller}/{action}/{id?}"
-                    , new { controller = "App", Action = "Index" });
+                    , new {controller = "App", Action = "Index"});
             });
 
             //if (env.IsDevelopment())

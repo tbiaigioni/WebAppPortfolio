@@ -38,14 +38,14 @@ namespace WebAppPortfolio.Data.Repositories
                 .FirstOrDefault(c => c.Id == id);
         }
 
-        public Camp GetCampByMonkier(string moniker)
+        public Camp GetCampByMoniker(string moniker)
         {
             return DbContext.Camps
                 .Include(c => c.Location)
                 .FirstOrDefault(c => c.Moniker.Equals(moniker, StringComparison.CurrentCultureIgnoreCase));
         }
 
-        public Camp GetCampByMonikeyWithSpeakers(string moniker)
+        public Camp GetCampByMonikerWithSpeakers(string moniker)
         {
             return DbContext.Camps
                 .Include(c => c.Location)

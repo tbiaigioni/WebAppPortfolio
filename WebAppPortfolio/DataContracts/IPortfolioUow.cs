@@ -9,7 +9,7 @@ namespace WebAppPortfolio.DataContracts
     {
 
         void Commit();
-
+        Task<bool> SaveAllAsync();
 
         IProductsRepository Products { get; }
         IOrdersRepository Orders { get; }

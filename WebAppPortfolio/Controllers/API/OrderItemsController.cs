@@ -5,8 +5,10 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using WebAppPortfolio.Data.Entities;
 using WebAppPortfolio.DataContracts;
 using WebAppPortfolio.Entities;
 using WebAppPortfolio.ViewModels;
@@ -21,8 +23,9 @@ namespace WebAppPortfolio.Controllers.API
 
         public OrderItemsController(IPortfolioUow uow
             , IMapper mapper
-            , ILogger<OrderItemsController> logger)
-            : base(uow, mapper)
+            , ILogger<OrderItemsController> logger
+            , UserManager<PortfolioUser> userManager)
+            : base(uow, mapper, userManager)
         {
             _logger = logger;
         }
@@ -30,11 +33,8 @@ namespace WebAppPortfolio.Controllers.API
         [HttpGet]
         public IActionResult Get(int orderId)
         {
-
             try
             {
-
-
                 var order = Uow.Orders.GetOrderById(User.Identity.Name, orderId);
                 if (order != null)
                     return Ok(mapper.Map<IEnumerable<OrderItem>, IEnumerable<OrderItemViewModel>>(order.Items));
@@ -46,7 +46,6 @@ namespace WebAppPortfolio.Controllers.API
                 _logger.LogError($"Unable to get OrderItems : {e}");
                 return BadRequest("Unable to get OrderItems");
             }
-
         }
 
         [HttpGet("{id}")]
@@ -54,7 +53,7 @@ namespace WebAppPortfolio.Controllers.API
         {
             try
             {
-                var order = Uow.Orders.GetOrderById(User.Identity.Name,id);
+                var order = Uow.Orders.GetOrderById(User.Identity.Name, id);
                 var item = order?.Items.FirstOrDefault(i => i.Id == id);
                 if (item != null)
                 {

@@ -23,99 +23,82 @@ namespace WebAppPortfolio.Controllers
         private readonly UserManager<PortfolioUser> _userManager;
 
         public OrdersController(IPortfolioUow uow
-                                ,IMapper mapper
-                                ,ILogger<OrdersController> logger
-            ,UserManager<PortfolioUser> userManager) 
-                                : base(uow,mapper)
+            , IMapper mapper
+            , ILogger<OrdersController> logger
+            , UserManager<PortfolioUser> userManager)
+            : base(uow, mapper, userManager)
         {
             _logger = logger;
-            _userManager = userManager;
         }
 
         [HttpGet]
         public IActionResult Get(bool includeItems = true)
         {
-
             try
             {
                 var username = User.Identity.Name;
 
-                var results = Uow.Orders.GetAllOrdersByUser(username,includeItems);
+                var results = Uow.Orders.GetAllOrdersByUser(username, includeItems);
                 return Ok(mapper.Map<IEnumerable<Order>, IEnumerable<OrderViewModel>>(results));
             }
             catch (Exception ex)
             {
-
                 _logger.LogError($"Failed to Get Orders: {ex}");
                 return BadRequest("No Orders Found");
             }
-
         }
 
 
         [HttpGet("{orderNumber}")]
         public IActionResult Get(string orderNumber)
         {
-
             try
             {
-
-                var order = mapper.Map<Order,OrderViewModel>((Uow.Orders.GetOrderByOrderNumber(User.Identity.Name,orderNumber)));
+                var order = mapper.Map<Order, OrderViewModel>(
+                    (Uow.Orders.GetOrderByOrderNumber(User.Identity.Name, orderNumber)));
                 if (order != null)
                 {
                     return Ok(order);
                 }
 
                 return NotFound();
-
             }
             catch (Exception ex)
             {
-
                 _logger.LogError($"No Order Number Exists: {ex}");
                 return BadRequest("No OrderNumber Exists.");
             }
-
-            
         }
 
         [HttpGet("{id:int}")]
         public IActionResult Get(int id)
         {
-
             try
             {
-
                 var order = Uow.Orders.GetOrderById(User.Identity.Name, id);
                 if (order != null)
                 {
-                    return Ok(mapper.Map<Order,OrderViewModel>(order));
+                    return Ok(mapper.Map<Order, OrderViewModel>(order));
                 }
 
                 return NotFound();
-
             }
             catch (Exception ex)
             {
-
                 _logger.LogError($"No Order Number Exists: {ex}");
                 return BadRequest("No OrderNumber Exists.");
             }
-
-
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody]OrderViewModel model)
+        public async Task<IActionResult> Post([FromBody] OrderViewModel model)
         {
             try
             {
-
                 var newOrder = mapper.Map<OrderViewModel, Order>(model);
 
                 if (newOrder.OrderDate == DateTime.MinValue)
                 {
-
                     newOrder.OrderDate = DateTime.Now;
                 }
 
@@ -127,16 +110,13 @@ namespace WebAppPortfolio.Controllers
                 Uow.Orders.Add(newOrder);
                 Uow.Commit();
 
-                return Created($"/api/orders/{newOrder.Id}", mapper.Map<Order,OrderViewModel>(newOrder));
-
+                return Created($"/api/orders/{newOrder.Id}", mapper.Map<Order, OrderViewModel>(newOrder));
             }
             catch (Exception ex)
             {
                 _logger.LogError($"Failed to save new order: {ex}");
                 return BadRequest("No OrderNumber Exists.");
             }
-
-            
         }
     }
 }

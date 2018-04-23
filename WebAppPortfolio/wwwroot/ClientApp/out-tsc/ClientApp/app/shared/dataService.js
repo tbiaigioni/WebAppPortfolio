@@ -27,9 +27,10 @@ var DataService = /** @class */ (function () {
     };
     DataService = __decorate([
         core_1.Injectable(),
-        __metadata("design:paramtypes", [http_1.HttpClient])
+        __metadata("design:paramtypes", [typeof (_a = typeof http_1.HttpClient !== "undefined" && http_1.HttpClient) === "function" && _a || Object])
     ], DataService);
     return DataService;
+    var _a;
 }());
 exports.DataService = DataService;
 //# sourceMappingURL=dataService.js.map

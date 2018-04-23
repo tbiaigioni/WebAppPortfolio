@@ -11,8 +11,8 @@ namespace WebAppPortfolio.DataContracts
         IEnumerable<Camp> GetAllCamps();
         Camp GetCamp(int id);
         Camp GetCampWithSpeakers(int id);
-        Camp GetCampByMonkier(string moniker);
-        Camp GetCampByMonikeyWithSpeakers(string moniker);
+        Camp GetCampByMoniker(string moniker);
+        Camp GetCampByMonikerWithSpeakers(string moniker);
 
     }
 }

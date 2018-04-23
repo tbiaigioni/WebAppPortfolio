@@ -4,8 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using WebAppPortfolio.Data;
+using WebAppPortfolio.Data.Entities;
 using WebAppPortfolio.DataContracts;
 using WebAppPortfolio.Services;
 using WebAppPortfolio.ViewModels;
@@ -14,14 +16,22 @@ using WebAppPortfolio.ViewModels;
 
 namespace WebAppPortfolio.Controllers
 {
-    public class AppController : ApiBaseController
+    public class AppController : Controller
     {
         private readonly IMailService _mailService;
+        private IPortfolioUow Uow { get; set; }
+        private readonly IMapper mapper;
+        private readonly UserManager<PortfolioUser> _userManager;
 
-        public AppController(IMailService mailService, IPortfolioUow uow,IMapper mapper) : base(uow,mapper)
+        public AppController(IMailService mailService, IPortfolioUow uow, IMapper mapper,
+            UserManager<PortfolioUser> userManager)
         {
             _mailService = mailService;
+            Uow = uow;
+            this.mapper = mapper;
+            _userManager = userManager;
         }
+
         // GET: /<controller>/
         public IActionResult Index()
         {
@@ -39,7 +49,6 @@ namespace WebAppPortfolio.Controllers
         [HttpPost("contact")]
         public IActionResult Contact(ContactViewModel model)
         {
-
             if (ModelState.IsValid)
             {
                 _mailService.SendMessage(model.FirstName, model.Subject, model.Msg);
@@ -48,8 +57,8 @@ namespace WebAppPortfolio.Controllers
             }
             else
             {
-
             }
+
             return View();
         }
 
@@ -59,6 +68,7 @@ namespace WebAppPortfolio.Controllers
 
             return View();
         }
+
         [Authorize]
         public IActionResult Shop()
         {
