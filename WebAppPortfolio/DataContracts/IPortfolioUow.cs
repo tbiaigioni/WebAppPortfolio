@@ -13,5 +13,8 @@ namespace WebAppPortfolio.DataContracts
 
         IProductsRepository Products { get; }
         IOrdersRepository Orders { get; }
+        ICampsRepository Camps { get; }
+        ISpeakersRepository Speakers { get; }
+        ITalksRepository Talks { get; }
     }
 }

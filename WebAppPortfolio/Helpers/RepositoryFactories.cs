@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WebAppPortfolio.Data;
+using WebAppPortfolio.Data.Repositories;
 using WebAppPortfolio.DataContracts;
 
 namespace WebAppPortfolio.Helpers
@@ -19,6 +20,9 @@ namespace WebAppPortfolio.Helpers
             {
                 {typeof(IProductsRepository),dbContext=> new ProductsRepository(dbContext) },
                 {typeof(IOrdersRepository),dbContext=> new OrdersRepository(dbContext) },
+                {typeof(ITalksRepository),dbContext=> new TalksRepository(dbContext) },
+                {typeof(ICampsRepository),dbContext=> new CampsRepository(dbContext) },
+                {typeof(ISpeakersRepository),dbContext=> new SpeakersRepository(dbContext) },
             };
         }
 

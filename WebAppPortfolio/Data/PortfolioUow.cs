@@ -12,18 +12,17 @@ namespace WebAppPortfolio.Data
         //Add Entity Repositories Here
         public IProductsRepository Products => GetRepository<IProductsRepository>();
         public IOrdersRepository Orders => GetRepository<IOrdersRepository>();
+        public ICampsRepository Camps => GetRepository<ICampsRepository>();
+        public ISpeakersRepository Speakers => GetRepository<ISpeakersRepository>();
+        public ITalksRepository Talks => GetRepository<ITalksRepository>();
 
         public PortfolioUow(PortfolioContext context,IRepositoryProvider repositoryProvider)
         {
-            this._context = context;
+            _context = context;
             repositoryProvider.DbContext = context;
             RepositoryProvider = repositoryProvider;
         }
-
-
-        
-
-
+ 
         protected IRepositoryProvider RepositoryProvider { get; set; }
 
         
@@ -38,6 +37,11 @@ namespace WebAppPortfolio.Data
         public void Commit()
         {
             _context.SaveChanges();
+        }
+
+        public async Task<bool> SaveAllAsync()
+        {
+            return (await _context.SaveChangesAsync()) > 0;
         }
 
         public void Dispose()

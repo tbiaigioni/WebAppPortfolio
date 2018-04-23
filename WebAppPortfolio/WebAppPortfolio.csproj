@@ -6,6 +6,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Data\Migrations\20180421125336_campEntities.cs" />
+    <Compile Remove="Data\Migrations\20180421125336_campEntities.Designer.cs" />
+    <Compile Remove="Data\Migrations\20180421125711_CodeCampEntities.cs" />
+    <Compile Remove="Data\Migrations\20180421125711_CodeCampEntities.Designer.cs" />
+    <Compile Remove="Data\Migrations\20180421133046_CampModification.cs" />
+    <Compile Remove="Data\Migrations\20180421133046_CampModification.Designer.cs" />
+    <Compile Remove="Data\Migrations\20180421133544_CampMods.cs" />
+    <Compile Remove="Data\Migrations\20180421133544_CampMods.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Remove="Views\App\About.cshtml" />
     <Content Remove="Views\App\Contact.cshtml" />
     <Content Remove="Views\App\Index.cshtml" />
@@ -14,6 +25,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\app\shared\dataService.ts" />
+    <None Remove="ClientApp\app\shared\product.ts" />
     <None Remove="ClientApp\app\shop\productList.component.ts" />
   </ItemGroup>
 
@@ -35,6 +48,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\app\shared\dataService.ts" />
+    <TypeScriptCompile Include="ClientApp\app\shared\product.ts" />
     <TypeScriptCompile Include="ClientApp\app\shop\productList.component.ts" />
     <TypeScriptCompile Include="wwwroot\ts\main.ts" />
     <TypeScriptCompile Include="wwwroot\ts\PortfolioCustomer.ts" />

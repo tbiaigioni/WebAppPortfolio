@@ -58,7 +58,8 @@ namespace WebAppPortfolio
 
             services.AddDbContext<PortfolioContext>(cfg  =>
             {
-                cfg.UseSqlServer(_config.GetConnectionString("PortfolioCOnnectionString"));
+                //cfg.UseSqlServer(_config.GetConnectionString("PortfolioCOnnectionString"));
+                cfg.UseSqlServer(_config.GetConnectionString("DevConnectionString"));
             });
 
             services.AddTransient<PortfolioSeeder>();

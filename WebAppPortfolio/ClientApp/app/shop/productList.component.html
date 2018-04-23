@@ -1,5 +1,37 @@
 ﻿<div class="row">
-    <ul>
-        <li *ngFor="let p of products"></li>
-    </ul>
+
+    <div class="col-sm-6 col-md-3 col-lg-2" *ngFor="let p of products">
+        <div class="block">
+            <div class="img-container">
+                <img class="img-responsive" src="/img/{{p.artId}}.jpg" [alt]="p.title">
+                <div class="img-options">
+                    <div class="img-options-content">
+                        <div class="push-20">
+                            <a class="btn btn-sm btn-default">View</a>
+                            <a class="btn btn-sm btn-default" href="javascript:void(0)">
+                                <i class="fa fa-plus"></i> Add to cart
+                            </a>
+                        </div>
+                        <div class="text-warning">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <span class="text-white">(998)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="block-content">
+                <div class="push-10">
+                    <div class="h4 font-w600 text-success pull-right push-10-l">{{p.price}}</div>
+                    <a class="h5">{{p.title}}</a>
+
+                </div>
+                <div class="h6" href="base_pages_ecom_store_product.html">{{p.artist}}</div>
+                <div class="text-muted">{{p.category}} - {{p.size}}</div>
+            </div>
+        </div>
+    </div>
 </div>

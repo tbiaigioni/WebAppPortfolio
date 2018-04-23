@@ -91,7 +91,8 @@ namespace WebAppPortfolio.Controllers
                 {
                     return Ok(mapper.Map<Order,OrderViewModel>(order));
                 }
-                else return NotFound();
+
+                return NotFound();
 
             }
             catch (Exception ex)

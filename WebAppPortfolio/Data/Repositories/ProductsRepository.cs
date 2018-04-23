@@ -10,16 +10,18 @@ namespace WebAppPortfolio.Data
 {
     public class ProductsRepository : EFRepository<Product>,IProductsRepository
     {
-        //private readonly ILogger<ProductsRepository> logger;
+        private readonly ILogger<ProductsRepository> _logger;
 
+
+        public ProductsRepository(PortfolioContext dbContext,ILogger<ProductsRepository> logger) : base(dbContext)
+        {
+            _logger = logger;
+        }
 
         public ProductsRepository(PortfolioContext dbContext) : base(dbContext)
         {
-
         }
 
-
-        
 
         public IQueryable<Product> GetAllProducts()
         {

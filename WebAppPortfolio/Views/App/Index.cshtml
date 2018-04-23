@@ -1,9 +1,17 @@
-﻿ <!-- Hero Content -->
+﻿
+@section scripts{
+
+
+}
+<!-- Hero Content -->
 <div class="bg-primary-dark-op">
     <section class="content content-full content-boxed overflow-hidden">
         <!-- Section Content -->
+        <div id="particles-js">
+            <canvas class="particles-js-canvas-el" style="width: 100%; height: 100%;" width="1028" height="651"></canvas>
+        </div>
         <div class="push-100-t push-50 text-center">
-            <img style="height: 100%; width: 100%; object-fit: contain" src= @Url.Content("~/img/white_logo_transparent_background.png") />
+            <img style="height: 100%; width: 100%; object-fit: contain" src=@Url.Content("~/img/white_logo_transparent_background.png") />
         </div>
         <!-- END Section Content -->
     </section>
@@ -14,7 +22,7 @@
     <section class="content content-boxed">
         <!-- Section Content -->
         <h2 class="push-50-t push-50 text-center">Content #1.</h2>
-       
+
         <!-- END Section Content -->
     </section>
 </div>
