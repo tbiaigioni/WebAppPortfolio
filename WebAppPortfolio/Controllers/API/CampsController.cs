@@ -16,7 +16,7 @@ using WebAppPortfolio.Filters;
 
 namespace WebAppPortfolio.Controllers.API
 {
-    [Authorize]
+    //[Authorize]
     [EnableCors("AnyGET")]
     [Produces("application/json")]
     [Route("api/[Controller]")]
@@ -49,7 +49,7 @@ namespace WebAppPortfolio.Controllers.API
         }
 
         [HttpGet("{moniker}", Name = "CampGet")]
-        public IActionResult Get(string moniker, bool includeSpeakers)
+        public IActionResult Get(string moniker, bool includeSpeakers = false)
         {
             try
             {
@@ -94,11 +94,12 @@ namespace WebAppPortfolio.Controllers.API
             }
             catch (Exception e)
             {
-                _logger.LogError($"Threw exception while saving camps: {e}");
+                _logger.LogError($"Exception thrown while saving camps: {e}");
                 return BadRequest("Failed to created camp.");
             }
         }
 
+        [HttpPatch("{moniker}")]
         [HttpPut("{moniker}")]
         public async Task<IActionResult> Put(string moniker, [FromBody] CampModel model)
         {
