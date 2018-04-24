@@ -25,9 +25,9 @@ namespace WebAppPortfolio.Controllers
         private readonly IConfiguration _config;
 
         public AccountController(ILogger<AccountController> logger
-            ,SignInManager<PortfolioUser> signInManager
-            ,UserManager<PortfolioUser> userManager
-            ,IConfiguration config)
+            , SignInManager<PortfolioUser> signInManager
+            , UserManager<PortfolioUser> userManager
+            , IConfiguration config)
         {
             _logger = logger;
             _signInManager = signInManager;
@@ -41,6 +41,7 @@ namespace WebAppPortfolio.Controllers
             {
                 return RedirectToAction("Index", "App");
             }
+
             return View();
         }
 
@@ -64,14 +65,13 @@ namespace WebAppPortfolio.Controllers
                     {
                         return RedirectToAction("Shop", "App");
                     }
-                    
                 }
-
             }
 
-            ModelState.AddModelError("","Failed to login");
+            ModelState.AddModelError("", "Failed to login");
             return View();
         }
+
         [HttpGet]
         public async Task<IActionResult> Logout()
         {
@@ -89,34 +89,33 @@ namespace WebAppPortfolio.Controllers
 
                 if (user != null)
                 {
-                    var result = await _signInManager.CheckPasswordSignInAsync(user,model.Password,false);
+                    var result = await _signInManager.CheckPasswordSignInAsync(user, model.Password, false);
                     if (result.Succeeded)
                     {
                         var claims = new[]
                         {
-                            new Claim(JwtRegisteredClaimNames.Sub,user.Email),
+                            new Claim(JwtRegisteredClaimNames.Sub, user.Email),
                             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                            new Claim(JwtRegisteredClaimNames.UniqueName,user.UserName), 
+                            new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName),
                         };
 
                         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Tokens:key"]));
-                        var creds = new SigningCredentials(key,SecurityAlgorithms.HmacSha256);
+                        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
                         var token = new JwtSecurityToken(
                             _config["Tokens:Issuer"],
                             _config["Tokens:Audience"],
                             claims,
-                                expires:DateTime.UtcNow.AddMinutes(20),
+                            expires: DateTime.UtcNow.AddMinutes(20),
                             signingCredentials: creds);
                         var results = new
                         {
                             token = new JwtSecurityTokenHandler().WriteToken(token),
-                            expiration= token.ValidTo
+                            expiration = token.ValidTo
                         };
 
                         return Created("", results);
                     }
                 }
-                
             }
 
             return BadRequest();

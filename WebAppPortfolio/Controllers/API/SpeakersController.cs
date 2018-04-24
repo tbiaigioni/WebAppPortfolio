@@ -96,7 +96,7 @@ namespace WebAppPortfolio.Controllers.API
                 var speaker = mapper.Map<Speaker>(model);
                 speaker.Camp = camp;
 
-                var campUser = await _userManager.FindByNameAsync(this.User.Identity.Name);
+                var campUser = await _userManager.FindByNameAsync(User.Identity.Name);
                 if (campUser != null)
                 {
                     speaker.User = campUser;

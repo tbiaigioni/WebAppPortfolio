@@ -24,7 +24,7 @@ namespace WebAppPortfolio.Data.Repositories
                 .FirstOrDefault();
         }
 
-        public IEnumerable<Talk> GetTalksForSpeaker(int speakerId)
+        public IEnumerable<Talk> GetTalks(int speakerId)
         {
             return DbContext.Talks
                 .Include(t => t.Speaker)

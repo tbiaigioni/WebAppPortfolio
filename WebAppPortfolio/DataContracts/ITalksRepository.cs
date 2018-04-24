@@ -9,7 +9,7 @@ namespace WebAppPortfolio.DataContracts
     public interface ITalksRepository : IRepository<Talk>
     {
         Talk GetTalk(int talkId);
-        IEnumerable<Talk> GetTalksForSpeaker(int speakerId);
+        IEnumerable<Talk> GetTalks(int speakerId);
 
     }
 }
