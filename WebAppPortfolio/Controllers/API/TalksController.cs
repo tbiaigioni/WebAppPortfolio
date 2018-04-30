@@ -24,9 +24,10 @@ namespace WebAppPortfolio.Controllers.API
         private ILogger<TalksController> _logger;
 
         public TalksController(IPortfolioUow uow, IMapper mapper, UserManager<PortfolioUser> userManager
-            , ILogger<TalksController> logger) : base(uow, mapper, userManager)
+            , ILogger<TalksController> logger,IMemoryCache cache) : base(uow, mapper, userManager)
         {
             _logger = logger;
+            _cache = cache;
         }
 
 
