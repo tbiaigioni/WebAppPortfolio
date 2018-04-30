@@ -37,7 +37,7 @@ namespace WebAppPortfolio.Controllers.API
             {
                 var order = Uow.Orders.GetOrderById(User.Identity.Name, orderId);
                 if (order != null)
-                    return Ok(mapper.Map<IEnumerable<OrderItem>, IEnumerable<OrderItemViewModel>>(order.Items));
+                    return Ok(Mapper.Map<IEnumerable<OrderItem>, IEnumerable<OrderItemViewModel>>(order.Items));
 
                 return NotFound();
             }
@@ -57,7 +57,7 @@ namespace WebAppPortfolio.Controllers.API
                 var item = order?.Items.FirstOrDefault(i => i.Id == id);
                 if (item != null)
                 {
-                    return Ok(mapper.Map<OrderItem, OrderItemViewModel>(item));
+                    return Ok(Mapper.Map<OrderItem, OrderItemViewModel>(item));
                 }
 
 

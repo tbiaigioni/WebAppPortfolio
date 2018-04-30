@@ -39,7 +39,7 @@ namespace WebAppPortfolio.Controllers.API
                 var speakers = includeTalks
                     ? Uow.Speakers.GetSpeakersByMonikerWithTalks(moniker)
                     : Uow.Speakers.GetSpeakersByMoniker(moniker);
-                return Ok(mapper.Map<IEnumerable<SpeakerModel>>(speakers));
+                return Ok(Mapper.Map<IEnumerable<SpeakerModel>>(speakers));
             }
             catch (Exception e)
             {
@@ -57,7 +57,7 @@ namespace WebAppPortfolio.Controllers.API
                 var speakers = includeTalks
                     ? Uow.Speakers.GetSpeakersByMonikerWithTalks(moniker)
                     : Uow.Speakers.GetSpeakersByMoniker(moniker);
-                return Ok(new {count = speakers.Count(), results = mapper.Map<IEnumerable<SpeakerModel>>(speakers)});
+                return Ok(new {count = speakers.Count(), results = Mapper.Map<IEnumerable<SpeakerModel>>(speakers)});
             }
             catch (Exception e)
             {
@@ -71,11 +71,16 @@ namespace WebAppPortfolio.Controllers.API
         {
             try
             {
-                var speaker = includeTalks ? Uow.Speakers.GetSpeakerWithTalks(id) : Uow.Speakers.GetSpeaker(id);
+                var speaker = includeTalks
+                    ? Uow.Speakers.GetSpeakerWithTalks(id)
+                    : Uow.Speakers.GetSpeaker(id);
+
+
                 if (speaker == null) return NotFound();
+
                 if (speaker.Camp.Moniker != moniker) return BadRequest("Speaker not in specified Camp");
 
-                return Ok(mapper.Map<SpeakerModel>(speaker));
+                return Ok(Mapper.Map<SpeakerModel>(speaker));
             }
             catch (Exception e)
             {
@@ -93,10 +98,10 @@ namespace WebAppPortfolio.Controllers.API
                 var camp = Uow.Camps.GetCampByMoniker(moniker);
                 if (camp == null) return BadRequest("Could not find camp");
 
-                var speaker = mapper.Map<Speaker>(model);
+                var speaker = Mapper.Map<Speaker>(model);
                 speaker.Camp = camp;
 
-                var campUser = await _userManager.FindByNameAsync(User.Identity.Name);
+                var campUser = await UserManager.FindByNameAsync(User.Identity.Name);
                 if (campUser != null)
                 {
                     speaker.User = campUser;
@@ -106,7 +111,7 @@ namespace WebAppPortfolio.Controllers.API
                     if (await Uow.SaveAllAsync())
                     {
                         var url = Url.Link("SpeakerGet", new {moniker = camp.Moniker, id = speaker.Id});
-                        return Created(url, mapper.Map<SpeakerModel>(speaker));
+                        return Created(url, Mapper.Map<SpeakerModel>(speaker));
                     }
                 }
             }
@@ -121,9 +126,7 @@ namespace WebAppPortfolio.Controllers.API
 
         [HttpPut("{id}")]
         [Authorize]
-        public async Task<IActionResult> Put(string moniker,
-            int id,
-            [FromBody] SpeakerModel model)
+        public async Task<IActionResult> Put(string moniker,int id,[FromBody] SpeakerModel model)
         {
             try
             {
@@ -133,11 +136,11 @@ namespace WebAppPortfolio.Controllers.API
 
                 if (speaker.User.UserName != this.User.Identity.Name) return Forbid();
 
-                mapper.Map(model, speaker);
+                Mapper.Map(model, speaker);
 
                 if (await Uow.SaveAllAsync())
                 {
-                    return Ok(mapper.Map<SpeakerModel>(speaker));
+                    return Ok(Mapper.Map<SpeakerModel>(speaker));
                 }
             }
             catch (Exception ex)

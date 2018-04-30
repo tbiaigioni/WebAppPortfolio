@@ -9,16 +9,20 @@ namespace WebAppPortfolio.Data.Entities
     public class CampModel
     {
         public string Url { get; set; }
+
         [Required]
         [MinLength(3)]
         [MaxLength(20)]
         public string Moniker { get; set; }
+
         [Required]
         [MinLength(5)]
         [MaxLength(100)]
         public string Name { get; set; }
+
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
+
         [Required]
         [MinLength(25)]
         [MaxLength(4096)]
