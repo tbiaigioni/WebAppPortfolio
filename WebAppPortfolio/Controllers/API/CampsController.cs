@@ -37,9 +37,9 @@ namespace WebAppPortfolio.Controllers.API
         {
             try
             {
-                var results = Uow.Camps.GetAllCamps();
+                var camps = Uow.Camps.GetAllCamps();
 
-                return Ok(results);
+                return Ok(Mapper.Map<IEnumerable<CampModel>>(camps));
             }
             catch (Exception ex)
             {
@@ -62,7 +62,7 @@ namespace WebAppPortfolio.Controllers.API
                     return NotFound($"Camp {moniker} was not found");
                 }
 
-                return Ok(mapper.Map<CampModel>(camp));
+                return Ok(Mapper.Map<CampModel>(camp));
             }
             catch (Exception e)
             {
@@ -80,13 +80,13 @@ namespace WebAppPortfolio.Controllers.API
             {
                 _logger.LogInformation("Creating new Code Camp");
 
-                var camp = mapper.Map<Camp>(model);
+                var camp = Mapper.Map<Camp>(model);
 
                 Uow.Camps.Add(camp);
                 if (await Uow.SaveAllAsync())
                 {
                     var newUri = Url.Link("CampGet", new {moniker = camp.Moniker});
-                    return Created(newUri, mapper.Map<CampModel>(camp));
+                    return Created(newUri, Mapper.Map<CampModel>(camp));
                 }
 
                 _logger.LogError("Could not save camp to database.");
@@ -99,8 +99,8 @@ namespace WebAppPortfolio.Controllers.API
             }
         }
 
-        [HttpPatch("{moniker}")]
-        [HttpPut("{moniker}")]
+        [HttpPatch("{moniker}")]//Update partial object
+        [HttpPut("{moniker}")]//Update entire object
         public async Task<IActionResult> Put(string moniker, [FromBody] CampModel model)
         {
             try
@@ -111,10 +111,10 @@ namespace WebAppPortfolio.Controllers.API
                     return NotFound($"Could not find a camp with the moniker of {moniker}");
                 }
 
-                mapper.Map(model, oldCamp);
+                Mapper.Map(model, oldCamp);
                 if (await Uow.SaveAllAsync())
                 {
-                    return Ok(mapper.Map<CampModel>(oldCamp));
+                    return Ok(Mapper.Map<CampModel>(oldCamp));
                 }
             }
             catch (Exception e)

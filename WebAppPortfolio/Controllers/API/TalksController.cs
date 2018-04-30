@@ -43,7 +43,7 @@ namespace WebAppPortfolio.Controllers.API
                     return BadRequest("Invalid talks for the speaker selelcted.");
                 }
 
-                return Ok(mapper.Map<IEnumerable<TalkModel>>(talks));
+                return Ok(Mapper.Map<IEnumerable<TalkModel>>(talks));
             }
             catch (Exception e)
             {
@@ -76,7 +76,7 @@ namespace WebAppPortfolio.Controllers.API
 
                 AddETag(talk);
 
-                return Ok(mapper.Map<TalkModel>(talk));
+                return Ok(Mapper.Map<TalkModel>(talk));
             }
             catch (Exception e)
             {
@@ -102,7 +102,7 @@ namespace WebAppPortfolio.Controllers.API
                 var speaker = Uow.Speakers.GetSpeaker(speakerId);
                 if (speaker != null)
                 {
-                    var talk = mapper.Map<Talk>(model);
+                    var talk = Mapper.Map<Talk>(model);
 
                     talk.Speaker = speaker;
                     Uow.Talks.Add(talk);
@@ -112,7 +112,7 @@ namespace WebAppPortfolio.Controllers.API
                         AddETag(talk);
                         return Created(
                             Url.Link("GetTalk", new {moniker = moniker, speakerId = speakerId, id = talk.Id}),
-                            mapper.Map<TalkModel>(talk));
+                            Mapper.Map<TalkModel>(talk));
                     }
                 }
             }
@@ -141,12 +141,12 @@ namespace WebAppPortfolio.Controllers.API
                     }
                 }
 
-                mapper.Map(model, talk);
+                Mapper.Map(model, talk);
 
                 if (await Uow.SaveAllAsync())
                 {
                     AddETag(talk);
-                    return Ok(mapper.Map<TalkModel>(talk));
+                    return Ok(Mapper.Map<TalkModel>(talk));
                 }
             }
             catch (Exception ex)

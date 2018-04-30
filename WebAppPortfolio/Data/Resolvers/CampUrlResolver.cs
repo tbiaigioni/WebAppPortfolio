@@ -11,7 +11,7 @@ namespace WebAppPortfolio.Data.Entities
 {
     public class CampUrlResolver : IValueResolver<Camp, CampModel,string>
     {
-        private IHttpContextAccessor _httpContextAccessor;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
         public CampUrlResolver(IHttpContextAccessor httpContextAccessor)
         {

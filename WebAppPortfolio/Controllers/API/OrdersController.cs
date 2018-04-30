@@ -20,7 +20,6 @@ namespace WebAppPortfolio.Controllers
     public class OrdersController : ApiBaseController
     {
         private readonly ILogger<OrdersController> _logger;
-        private readonly UserManager<PortfolioUser> _userManager;
 
         public OrdersController(IPortfolioUow uow
             , IMapper mapper
@@ -39,7 +38,7 @@ namespace WebAppPortfolio.Controllers
                 var username = User.Identity.Name;
 
                 var results = Uow.Orders.GetAllOrdersByUser(username, includeItems);
-                return Ok(mapper.Map<IEnumerable<Order>, IEnumerable<OrderViewModel>>(results));
+                return Ok(Mapper.Map<IEnumerable<Order>, IEnumerable<OrderViewModel>>(results));
             }
             catch (Exception ex)
             {
@@ -54,7 +53,7 @@ namespace WebAppPortfolio.Controllers
         {
             try
             {
-                var order = mapper.Map<Order, OrderViewModel>(
+                var order = Mapper.Map<Order, OrderViewModel>(
                     (Uow.Orders.GetOrderByOrderNumber(User.Identity.Name, orderNumber)));
                 if (order != null)
                 {
@@ -78,7 +77,7 @@ namespace WebAppPortfolio.Controllers
                 var order = Uow.Orders.GetOrderById(User.Identity.Name, id);
                 if (order != null)
                 {
-                    return Ok(mapper.Map<Order, OrderViewModel>(order));
+                    return Ok(Mapper.Map<Order, OrderViewModel>(order));
                 }
 
                 return NotFound();
@@ -95,7 +94,7 @@ namespace WebAppPortfolio.Controllers
         {
             try
             {
-                var newOrder = mapper.Map<OrderViewModel, Order>(model);
+                var newOrder = Mapper.Map<OrderViewModel, Order>(model);
 
                 if (newOrder.OrderDate == DateTime.MinValue)
                 {
@@ -110,7 +109,7 @@ namespace WebAppPortfolio.Controllers
                 Uow.Orders.Add(newOrder);
                 Uow.Commit();
 
-                return Created($"/api/orders/{newOrder.Id}", mapper.Map<Order, OrderViewModel>(newOrder));
+                return Created($"/api/orders/{newOrder.Id}", Mapper.Map<Order, OrderViewModel>(newOrder));
             }
             catch (Exception ex)
             {

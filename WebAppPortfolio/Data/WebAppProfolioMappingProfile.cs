@@ -16,8 +16,10 @@ namespace WebAppPortfolio.Data
             CreateMap<Order, OrderViewModel>()
                 .ForMember(o => o.OrderId, ex => ex.MapFrom(o => o.Id))
                 .ReverseMap();
+
             CreateMap<OrderItem, OrderItemViewModel>()
                 .ReverseMap();
+
             CreateMap<Camp, CampModel>()
                 .ForMember(c => c.StartDate,
                     opt => opt.MapFrom(camp => camp.EventDate))

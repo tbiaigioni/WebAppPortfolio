@@ -14,15 +14,15 @@ namespace WebAppPortfolio.Controllers
     public abstract class ApiBaseController : Controller
     {
         protected IPortfolioUow Uow { get; set; }
-        protected readonly IMapper mapper;
-        protected readonly UserManager<PortfolioUser> _userManager;
+        protected readonly IMapper Mapper;
+        protected readonly UserManager<PortfolioUser> UserManager;
         public const string URLHELPER = "URLHELPER";
 
         protected ApiBaseController(IPortfolioUow uow, IMapper mapper, UserManager<PortfolioUser> userManager)
         {
             Uow = uow;
-            this.mapper = mapper;
-            _userManager = userManager;
+            Mapper = mapper;
+            UserManager = userManager;
         }
 
         
@@ -30,7 +30,7 @@ namespace WebAppPortfolio.Controllers
         public override void OnActionExecuting(ActionExecutingContext context)
         {
             base.OnActionExecuting(context);
-            context.HttpContext.Items[URLHELPER] = this.Url;
+            context.HttpContext.Items[URLHELPER] = Url;
         }
     }
 }
