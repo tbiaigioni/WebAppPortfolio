@@ -103,7 +103,7 @@ namespace WebAppPortfolio.Controllers
 
                 if (!ModelState.IsValid) return BadRequest(ModelState);
 
-                var currentUser = await _userManager.FindByNameAsync(User.Identity.Name);
+                var currentUser = await UserManager.FindByNameAsync(User.Identity.Name);
                 newOrder.User = currentUser;
 
                 Uow.Orders.Add(newOrder);

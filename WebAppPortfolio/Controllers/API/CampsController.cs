@@ -17,7 +17,7 @@ using WebAppPortfolio.Filters;
 namespace WebAppPortfolio.Controllers.API
 {
     //[Authorize]
-    [EnableCors("AnyGET")]
+    //[EnableCors("AnyGET")]
     [Produces("application/json")]
     [Route("api/[Controller]")]
     [ValidateModel]

@@ -125,7 +125,7 @@ namespace WebAppPortfolio.Controllers.API
         }
 
         [HttpPut("{id}")]
-        [Authorize]
+        //[Authorize]
         public async Task<IActionResult> Put(string moniker,int id,[FromBody] SpeakerModel model)
         {
             try
@@ -134,7 +134,7 @@ namespace WebAppPortfolio.Controllers.API
                 if (speaker == null) return NotFound();
                 if (speaker.Camp.Moniker != moniker) return BadRequest("Speaker and Camp do not match");
 
-                if (speaker.User.UserName != this.User.Identity.Name) return Forbid();
+                //if (speaker.User.UserName != this.User.Identity.Name) return Forbid();
 
                 Mapper.Map(model, speaker);
 
