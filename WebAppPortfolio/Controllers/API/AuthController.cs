@@ -14,6 +14,7 @@ using Microsoft.IdentityModel.Tokens;
 using WebAppPortfolio.Data;
 using WebAppPortfolio.Data.DataModels;
 using WebAppPortfolio.Data.Entities;
+using WebAppPortfolio.Filters;
 
 namespace WebAppPortfolio.Controllers.API
 {
@@ -41,6 +42,8 @@ namespace WebAppPortfolio.Controllers.API
             _config = config;
         }
 
+        [ValidateModel]
+        [HttpPost("api/auth/token")]
         public async Task<IActionResult> CreateToken([FromBody] CredentialModel model)
         {
             try

@@ -69,7 +69,6 @@ namespace WebAppPortfolio.Controllers
             return View();
         }
 
-        [Authorize]
         public IActionResult Shop()
         {
             return View();

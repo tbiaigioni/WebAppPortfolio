@@ -1,7 +1,8 @@
 ﻿{
   "ConnectionStrings": {
     "PortfolioConnectionString": "Data Source=mi3-wsq3.a2hosting.com;Initial Catalog=halcyonp_Db;Integrated Security=False;User ID=halcyonp_admin;Password=K4yl33m3g4n!;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False",
-    "DevConnectionString": "server=(localdb)\\ProjectsV13;Database=PortfolioDb;Integrated Security=true;MultipleActiveResultSets=true;"
+    "DevConnectionString": "server=(localdb)\\ProjectsV13;Database=PortfolioDb;Integrated Security=true;MultipleActiveResultSets=true;",
+    "lclConnectionString": "Data Source=DESKTOP-COO1KQ8;Initial Catalog=PortfolioDb;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"
   },
   "Logging": {
     "LogLevel": {
@@ -10,8 +11,8 @@
   },
 
   "Tokens": {
-    "key": ":LKFJ:LDKJFIEVONo;eefhd;hf4",
-    "Issuer": "localhost",
-    "Audience": "localhost" 
+    "key": "$C&F)J@NcRfUjWnZr4u7x!A%D*G-KaPd",
+    "Issuer": "http://halcyonpattern.com",
+    "Audience": "http://halcyonpattern.com"
   } 
 }

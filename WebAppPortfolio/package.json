@@ -21,7 +21,9 @@
     "@angular/platform-browser": "^5.2.0",
     "@angular/platform-browser-dynamic": "^5.2.0",
     "@angular/router": "^5.2.0",
+    "bootstrap": "^4.1.1",
     "core-js": "^2.4.1",
+    "lodash": "^4.17.10",
     "particles.js": "^2.0.0",
     "rxjs": "^5.5.6",
     "zone.js": "^0.8.19"
@@ -30,6 +32,9 @@
     "@angular/cli": "~1.7.4",
     "@angular/compiler-cli": "^5.2.0",
     "@angular/language-service": "^5.2.0",
-    "typescript": "~2.5.3"
+    "typescript": "~2.5.3",
+    "gulp": "3.9.1",
+    "gulp-uglify": "~3.0.0",
+    "gulp-concat": "2.6.1"
   }
 }

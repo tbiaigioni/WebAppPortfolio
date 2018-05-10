@@ -9,9 +9,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var platform_browser_1 = require("@angular/platform-browser");
 var core_1 = require("@angular/core");
 var http_1 = require("@angular/common/http");
+var forms_1 = require("@angular/forms");
+var router_1 = require("@angular/router");
 var app_component_1 = require("./app.component");
-var productList_component_1 = require("./shop/productList.component");
+var login_component_1 = require("./login/login.component");
 var dataService_1 = require("./shared/dataService");
+var halcyon_module_1 = require("../halcyon/halcyon.module");
+var routes = [
+    { path: "login", component: login_component_1.Login }
+];
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
@@ -19,11 +25,17 @@ var AppModule = /** @class */ (function () {
         core_1.NgModule({
             declarations: [
                 app_component_1.AppComponent,
-                productList_component_1.ProductList
+                login_component_1.Login
             ],
             imports: [
                 platform_browser_1.BrowserModule,
-                http_1.HttpClientModule
+                http_1.HttpClientModule,
+                halcyon_module_1.HalcyonModule,
+                forms_1.FormsModule,
+                router_1.RouterModule.forRoot(routes, {
+                    useHash: true,
+                    enableTracing: false
+                })
             ],
             providers: [
                 dataService_1.DataService

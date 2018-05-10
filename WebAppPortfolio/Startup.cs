@@ -44,6 +44,7 @@ namespace WebAppPortfolio
             services.AddIdentity<PortfolioUser, IdentityRole>(cfg => { cfg.User.RequireUniqueEmail = true; })
                 .AddEntityFrameworkStores<PortfolioContext>();
 
+            services.AddMemoryCache();
             services.AddAuthentication()
                 .AddCookie()
                 .AddJwtBearer(cfg =>
@@ -63,8 +64,9 @@ namespace WebAppPortfolio
 
             services.AddDbContext<PortfolioContext>(cfg =>
             {
-                //cfg.UseSqlServer(_config.GetConnectionString("PortfolioCOnnectionString"));
-                cfg.UseSqlServer(_config.GetConnectionString("DevConnectionString"));
+                cfg.UseSqlServer(_env.IsProduction()
+                    ? _config.GetConnectionString("PortfolioConnectionString")
+                    : _config.GetConnectionString("lclConnectionString"));
             });
 
             services.AddTransient<PortfolioSeeder>();
@@ -80,6 +82,10 @@ namespace WebAppPortfolio
 
             services.AddMvc(opt =>
                 {
+                    if(!_env.IsProduction())
+                    {
+                        opt.SslPort = 44388;
+                    }
                     if (_env.IsProduction())
                     {
                         opt.Filters.Add(new RequireHttpsAttribute());
@@ -97,7 +103,7 @@ namespace WebAppPortfolio
                 cfg.DefaultApiVersion = new ApiVersion(1, 1);
                 cfg.AssumeDefaultVersionWhenUnspecified = true;
                 cfg.ReportApiVersions = true;
-                cfg.ApiVersionReader = new HeaderApiVersionReader("X-MyCodeCamp-Version");
+                cfg.ApiVersionReader = new HeaderApiVersionReader("X-HalcyonPattern-Version");
 
                 //cfg.Conventions.Controller<TalksController>()
                 //  .HasApiVersion(new ApiVersion(1, 0))
@@ -109,13 +115,6 @@ namespace WebAppPortfolio
 
             services.AddCors(cfg =>
             {
-                cfg.AddPolicy("Biagioni", bldr =>
-                {
-                    bldr.AllowAnyHeader()
-                        .AllowAnyMethod()
-                        .WithOrigins("http://HalcyonPattern.com");
-                });
-
                 cfg.AddPolicy("AnyGET", bldr =>
                 {
                     bldr.AllowAnyHeader()
@@ -144,6 +143,7 @@ namespace WebAppPortfolio
             loggerFactory.AddConsole(_config.GetSection("Logging"));
             loggerFactory.AddDebug();
             app.UseStaticFiles();
+
 
             app.UseAuthentication();
 

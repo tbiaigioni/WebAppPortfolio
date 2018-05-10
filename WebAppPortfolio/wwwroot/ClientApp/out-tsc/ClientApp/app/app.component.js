@@ -13,9 +13,9 @@ var AppComponent = /** @class */ (function () {
     }
     AppComponent = __decorate([
         core_1.Component({
-            selector: "the-shop",
+            selector: "app-root",
             templateUrl: './app.component.html',
-            styles: []
+            styleUrls: ['./app.component.css']
         })
     ], AppComponent);
     return AppComponent;

@@ -25,15 +25,23 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\app\login\login.component.ts" />
     <None Remove="ClientApp\app\shared\dataService.ts" />
+    <None Remove="ClientApp\app\shared\order.ts" />
     <None Remove="ClientApp\app\shared\product.ts" />
-    <None Remove="ClientApp\app\shop\productList.component.ts" />
   </ItemGroup>
 
   <ItemGroup>
     <None Include="Views\App\Contact.cshtml" />
     <None Include="Views\App\About.cshtml" />
     <None Include="Views\App\Index.cshtml" />
+    <None Include="wwwroot\assets\img\dark_logo_transparent_background.png" />
+    <None Include="wwwroot\assets\img\dark_logo_white_background.jpg" />
+    <None Include="wwwroot\assets\img\logo_size_icon.jpg" />
+    <None Include="wwwroot\assets\img\logo_size_icon_invert.jpg" />
+    <None Include="wwwroot\assets\img\logo_small.png" />
+    <None Include="wwwroot\assets\img\logo_transparent_background.png" />
+    <None Include="wwwroot\assets\img\logo_white_background.jpg" />
   </ItemGroup>
 
   <ItemGroup>
@@ -49,11 +57,24 @@
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\app\login\login.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\shared\dataService.ts" />
+    <TypeScriptCompile Include="ClientApp\app\shared\order.ts" />
     <TypeScriptCompile Include="ClientApp\app\shared\product.ts" />
-    <TypeScriptCompile Include="ClientApp\app\shop\productList.component.ts" />
     <TypeScriptCompile Include="wwwroot\ts\main.ts" />
     <TypeScriptCompile Include="wwwroot\ts\PortfolioCustomer.ts" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Data\Entities\HyperCube\" />
+    <Folder Include="wwwroot\js\" />
+  </ItemGroup>
+
+  <Target Name="MyPublishScripts" BeforeTargets="BeforePublish">
+    <Exec Command="npm install" />
+    <Exec Command="bower install" />
+    <Exec Command="gulp" />
+    <Exec Command="ng build" />
+  </Target>
 
 </Project>
