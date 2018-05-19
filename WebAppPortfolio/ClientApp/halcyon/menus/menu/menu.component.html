@@ -1,0 +1,17 @@
+<nav>
+  <ul>
+    <li *ngFor="let item of menuService.items">
+      <halcyon-menu-item [item] ="item">
+      </halcyon-menu-item>
+    </li>
+  </ul>
+</nav>
+
+<!--<button 
+      *ngIf="!menuService.showingLeftSideMenu"
+      class="btn btn-sm"
+      [ngClass]="{'horizontal': !menuService.isVertical }"
+      (click)="menuService.toggleMenuOrientation()">
+  <span *ngIf="menuService.isVertical" class="glyphicon glyphicon-menu-up"></span>
+  <span *ngIf="!menuService.isVertical" class="glyphicon glyphicon-menu-left"></span>
+</button>-->

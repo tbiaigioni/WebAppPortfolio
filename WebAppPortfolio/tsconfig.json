@@ -2,7 +2,9 @@
   "compileOnSave": false,
   "include": [
     "./ClientApp",
-    "./wwwroot/ts"
+    "./wwwroot/ts",
+    "./**/*.ts",
+    "./ClientApp/**/*.ts"
   ], 
   "compilerOptions": {
     "outDir": "./wwwroot/ClientApp/out-tsc",

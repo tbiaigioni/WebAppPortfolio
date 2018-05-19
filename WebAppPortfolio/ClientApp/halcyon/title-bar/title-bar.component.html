@@ -1,7 +1,20 @@
-﻿<div class="title-bar">
-    <img src="assets/img/logo_size_icon_invert.jpg" alt="Halcyon Pattern"/>
+﻿<div *md class="title-bar-small">
+    <fa name="fas fa-bars"></fa>
+    <fa name="cog" animation="spin"></fa>
+    <div class="small-image-holder">
+        <img class="small-image" src="img/logo_size_icon_invert.jpg">
+    </div>
+    <span class="glyphicon glyphicon-option-vertical"></span>
+</div>
+
+
+
+<div *lg class="title-bar ">
+    <img src="img/logo_size_invert.jpg" alt="Halcyon Pattern" />
     <div class="menu-area">
-        <!--<halcyon-top-bar></halcyon-top-bar>-->
-        <!--Menu-->
+        <particles [params]="myParams" [style]="myStyle" [width]="width" [height]="height"></particles>
+        <halcyon-top-bar></halcyon-top-bar>
+
+        <halcyon-menu></halcyon-menu>
     </div>
 </div>

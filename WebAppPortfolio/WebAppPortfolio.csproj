@@ -25,23 +25,34 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\app\app.menu.ts" />
+    <None Remove="ClientApp\app\app.routing.ts" />
+    <None Remove="ClientApp\app\app.settings.model.ts" />
+    <None Remove="ClientApp\app\app.settings.ts" />
     <None Remove="ClientApp\app\login\login.component.ts" />
     <None Remove="ClientApp\app\shared\dataService.ts" />
     <None Remove="ClientApp\app\shared\order.ts" />
     <None Remove="ClientApp\app\shared\product.ts" />
+    <None Remove="ClientApp\app\theme\components\fullscreen\Document.ts" />
+    <None Remove="ClientApp\halcyon\directives\screen-below-large.directive.ts" />
+    <None Remove="ClientApp\halcyon\directives\screen-large.directive.ts" />
+    <None Remove="ClientApp\halcyon\menus\menu-item\menu-item.component.ts" />
+    <None Remove="ClientApp\halcyon\Services\menu.service.ts" />
+    <None Remove="ClientApp\halcyon\Services\screen.service.ts" />
   </ItemGroup>
 
   <ItemGroup>
     <None Include="Views\App\Contact.cshtml" />
     <None Include="Views\App\About.cshtml" />
     <None Include="Views\App\Index.cshtml" />
-    <None Include="wwwroot\assets\img\dark_logo_transparent_background.png" />
-    <None Include="wwwroot\assets\img\dark_logo_white_background.jpg" />
-    <None Include="wwwroot\assets\img\logo_size_icon.jpg" />
-    <None Include="wwwroot\assets\img\logo_size_icon_invert.jpg" />
-    <None Include="wwwroot\assets\img\logo_small.png" />
-    <None Include="wwwroot\assets\img\logo_transparent_background.png" />
-    <None Include="wwwroot\assets\img\logo_white_background.jpg" />
+    <None Include="wwwroot\img\dark_logo_transparent_background.png" />
+    <None Include="wwwroot\img\dark_logo_white_background.jpg" />
+    <None Include="wwwroot\img\logo_size_icon.jpg" />
+    <None Include="wwwroot\img\logo_size_icon_invert.jpg" />
+    <None Include="wwwroot\img\logo_size_invert.jpg" />
+    <None Include="wwwroot\img\logo_small.png" />
+    <None Include="wwwroot\img\logo_transparent_background.png" />
+    <None Include="wwwroot\img\logo_white_background.jpg" />
   </ItemGroup>
 
   <ItemGroup>
@@ -57,16 +68,28 @@
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\app\app.menu.ts" />
+    <TypeScriptCompile Include="ClientApp\app\app.routing.ts" />
+    <TypeScriptCompile Include="ClientApp\app\app.settings.model.ts" />
+    <TypeScriptCompile Include="ClientApp\app\app.settings.ts" />
     <TypeScriptCompile Include="ClientApp\app\login\login.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\shared\dataService.ts" />
     <TypeScriptCompile Include="ClientApp\app\shared\order.ts" />
     <TypeScriptCompile Include="ClientApp\app\shared\product.ts" />
+    <TypeScriptCompile Include="ClientApp\app\theme\components\fullscreen\Document.ts" />
+    <TypeScriptCompile Include="ClientApp\halcyon\directives\screen-below-large.directive.ts" />
+    <TypeScriptCompile Include="ClientApp\halcyon\directives\screen-large.directive.ts" />
+    <TypeScriptCompile Include="ClientApp\halcyon\menus\menu-item\menu-item.component.ts" />
+    <TypeScriptCompile Include="ClientApp\halcyon\Services\menu.service.ts" />
+    <TypeScriptCompile Include="ClientApp\halcyon\Services\screen.service.ts" />
     <TypeScriptCompile Include="wwwroot\ts\main.ts" />
     <TypeScriptCompile Include="wwwroot\ts\PortfolioCustomer.ts" />
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="ClientApp\assets\img\" />
     <Folder Include="Data\Entities\HyperCube\" />
+    <Folder Include="wwwroot\ClientApp\" />
     <Folder Include="wwwroot\js\" />
   </ItemGroup>
 

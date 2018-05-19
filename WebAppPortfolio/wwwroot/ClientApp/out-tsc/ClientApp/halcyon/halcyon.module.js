@@ -8,24 +8,65 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var common_1 = require("@angular/common");
-var Halcyonbodycomponent = require("./halcyon-body/halcyon-body.component");
-var HalcyonBodyComponent = Halcyonbodycomponent.HalcyonBodyComponent;
+var halcyon_body_component_1 = require("./halcyon-body/halcyon-body.component");
 var content_component_1 = require("./Content/content.component");
+var title_bar_component_1 = require("./title-bar/title-bar.component");
+var top_bar_component_1 = require("./top-bar/top-bar.component");
+var status_bar_component_1 = require("./status-bar/status-bar.component");
+var halcyon_config_service_1 = require("./Services/halcyon-config.service");
+var screen_service_1 = require("./Services/screen.service");
+var screen_large_directive_1 = require("./directives/screen-large.directive");
+var screen_below_large_directive_1 = require("./directives/screen-below-large.directive");
+var platform_browser_1 = require("@angular/platform-browser");
+var ngx_responsive_1 = require("ngx-responsive");
+var angular_font_awesome_1 = require("angular-font-awesome");
+var menu_service_1 = require("./Services/menu.service");
+var menu_component_1 = require("./menus/menu/menu.component");
+var menu_item_component_1 = require("./menus/menu-item/menu-item.component");
+var router_1 = require("@angular/router");
+var angular_particle_1 = require("angular-particle");
+var config = {
+    breakPoints: {
+        xs: { max: 600 },
+        sm: { min: 601, max: 959 },
+        md: { min: 960, max: 1279 },
+        lg: { min: 1280, max: 1919 },
+        xl: { min: 1920 }
+    },
+    debounceTime: 100
+};
 var HalcyonModule = /** @class */ (function () {
     function HalcyonModule() {
     }
     HalcyonModule = __decorate([
         core_1.NgModule({
             imports: [
-                common_1.CommonModule
-            ],
-            exports: [
-                HalcyonBodyComponent
+                common_1.CommonModule,
+                platform_browser_1.BrowserModule,
+                ngx_responsive_1.ResponsiveModule.forRoot(config),
+                angular_font_awesome_1.AngularFontAwesomeModule,
+                router_1.RouterModule,
+                angular_particle_1.ParticlesModule
             ],
             declarations: [
-                HalcyonBodyComponent,
-                content_component_1.ContentComponent
-            ]
+                halcyon_body_component_1.HalcyonBodyComponent,
+                content_component_1.ContentComponent,
+                title_bar_component_1.TitleBarComponent,
+                top_bar_component_1.TopBarComponent,
+                status_bar_component_1.StatusBarComponent,
+                menu_component_1.MenuComponent,
+                menu_item_component_1.MenuItemComponent,
+                screen_large_directive_1.ScreenLarge,
+                screen_below_large_directive_1.ScreenBelowLarge,
+            ],
+            providers: [
+                halcyon_config_service_1.HalcyonConfigService,
+                screen_service_1.ScreenService,
+                menu_service_1.MenuService
+            ],
+            exports: [
+                halcyon_body_component_1.HalcyonBodyComponent
+            ],
         })
     ], HalcyonModule);
     return HalcyonModule;
