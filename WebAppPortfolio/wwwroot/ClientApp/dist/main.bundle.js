@@ -181,6 +181,7 @@ var search_component_1 = __webpack_require__("./ClientApp/app/pages/search/searc
 var not_found_component_1 = __webpack_require__("./ClientApp/app/pages/errors/not-found/not-found.component.ts");
 var error_component_1 = __webpack_require__("./ClientApp/app/pages/errors/error/error.component.ts");
 var app_settings_1 = __webpack_require__("./ClientApp/app/app.settings.ts");
+var angular_particle_1 = __webpack_require__("./node_modules/angular-particle/index.js");
 var sidenav_component_1 = __webpack_require__("./ClientApp/app/theme/components/sidenav/sidenav.component.ts");
 var vertical_menu_component_1 = __webpack_require__("./ClientApp/app/theme/components/menu/vertical-menu/vertical-menu.component.ts");
 var horizontal_menu_component_1 = __webpack_require__("./ClientApp/app/theme/components/menu/horizontal-menu/horizontal-menu.component.ts");
@@ -190,6 +191,8 @@ var fullscreen_component_1 = __webpack_require__("./ClientApp/app/theme/componen
 var applications_component_1 = __webpack_require__("./ClientApp/app/theme/components/applications/applications.component.ts");
 var messages_component_1 = __webpack_require__("./ClientApp/app/theme/components/messages/messages.component.ts");
 var user_menu_component_1 = __webpack_require__("./ClientApp/app/theme/components/user-menu/user-menu.component.ts");
+var about_me_component_1 = __webpack_require__("./ClientApp/app/pages/about-me/about-me.component.ts");
+__webpack_require__("./node_modules/hammerjs/hammer.js");
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
@@ -210,7 +213,8 @@ var AppModule = /** @class */ (function () {
                 fullscreen_component_1.FullScreenComponent,
                 applications_component_1.ApplicationsComponent,
                 messages_component_1.MessagesComponent,
-                user_menu_component_1.UserMenuComponent
+                user_menu_component_1.UserMenuComponent,
+                about_me_component_1.AboutMeComponent
             ],
             imports: [
                 platform_browser_1.BrowserModule,
@@ -224,6 +228,7 @@ var AppModule = /** @class */ (function () {
                 angular_calendar_1.CalendarModule.forRoot(),
                 shared_module_1.SharedModule,
                 pipes_module_1.PipesModule,
+                angular_particle_1.ParticlesModule,
                 app_routing_1.routing
             ],
             providers: [
@@ -255,6 +260,7 @@ var blank_component_1 = __webpack_require__("./ClientApp/app/pages/blank/blank.c
 var search_component_1 = __webpack_require__("./ClientApp/app/pages/search/search.component.ts");
 var not_found_component_1 = __webpack_require__("./ClientApp/app/pages/errors/not-found/not-found.component.ts");
 var error_component_1 = __webpack_require__("./ClientApp/app/pages/errors/error/error.component.ts");
+var about_me_component_1 = __webpack_require__("./ClientApp/app/pages/about-me/about-me.component.ts");
 exports.routes = [
     {
         path: '',
@@ -273,10 +279,11 @@ exports.routes = [
             { path: 'charts', loadChildren: 'app/pages/charts/charts.module#ChartsModule', data: { breadcrumb: 'Charts' } },
             { path: 'dynamic-menu', loadChildren: 'app/pages/dynamic-menu/dynamic-menu.module#DynamicMenuModule', data: { breadcrumb: 'Dynamic Menu' } },
             { path: 'blank', component: blank_component_1.BlankComponent, data: { breadcrumb: 'Blank page' } },
-            { path: 'search', component: search_component_1.SearchComponent, data: { breadcrumb: 'Search' } }
+            { path: 'search', component: search_component_1.SearchComponent, data: { breadcrumb: 'Search' } },
+            { path: 'about-me', component: about_me_component_1.AboutMeComponent, data: { breadcrumb: 'About Me' } }
         ]
     },
-    { path: 'landing', loadChildren: 'app/pages/landing/landing.module#LandingModule' },
+    { path: '', loadChildren: 'app/pages/landing/landing.module#LandingModule' },
     { path: 'login', loadChildren: 'app/pages/login/login.module#LoginModule' },
     { path: 'register', loadChildren: 'app/pages/register/register.module#RegisterModule' },
     { path: 'error', component: error_component_1.ErrorComponent, data: { breadcrumb: 'Error' } },
@@ -294,7 +301,7 @@ exports.routing = router_1.RouterModule.forRoot(exports.routes, {});
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var Settings = /** @class */ (function () {
-    function Settings(name, loadingSpinner, fixedHeader, sidenavIsOpened, sidenavIsPinned, sidenavUserBlock, menu, menuType, theme, rtl) {
+    function Settings(name, loadingSpinner, fixedHeader, sidenavIsOpened, sidenavIsPinned, sidenavUserBlock, menu, menuType, theme, rtl, logoText, logoShape) {
         this.name = name;
         this.loadingSpinner = loadingSpinner;
         this.fixedHeader = fixedHeader;
@@ -305,6 +312,8 @@ var Settings = /** @class */ (function () {
         this.menuType = menuType;
         this.theme = theme;
         this.rtl = rtl;
+        this.logoText = logoText;
+        this.logoShape = logoShape;
     }
     return Settings;
 }());
@@ -334,11 +343,13 @@ var AppSettings = /** @class */ (function () {
         true, //fixedHeader
         true, //sidenavIsOpened
         true, //sidenavIsPinned  
-        true, //sidenavUserBlock 
+        false, //sidenavUserBlock 
         'vertical', //horizontal , vertical
         'default', //default, compact, mini
-        'green-dark', //indigo-light, teal-light, red-light, blue-dark, green-dark, pink-dark
-        false // true = rtl, false = ltr
+        'blue-dark', //indigo-light, teal-light, red-light, blue-dark, green-dark, pink-dark
+        false, // true = rtl, false = ltr
+        'img/white_logo_transparent_background_noShape_80px.png', //logoText path
+        'img/white_logo_transparent_background_noText_80px.png' //logoShape Path
         );
     }
     AppSettings = __decorate([
@@ -347,6 +358,178 @@ var AppSettings = /** @class */ (function () {
     return AppSettings;
 }());
 exports.AppSettings = AppSettings;
+
+
+/***/ }),
+
+/***/ "./ClientApp/app/pages/about-me/about-me.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<div fxLayout=\"column\" fxLayoutAlign=\"center center\" class=\"about-me-header\">\r\n    <particles [params]=\"myParams\" [style]=\"myStyle\" [width]=\"width\" [height]=\"height\"></particles>\r\n    <p class=\"logo\">GRADUS</p>\r\n    <p class=\"intro-text\">Angular 5 Material Design Admin Template</p>\r\n    <p class=\"desc m-0\">Start creating your app with GRADUS template</p>\r\n    <p class=\"desc\"> 8 layouts, 6 color styles, 35+ pages</p>\r\n    <div fxLayout=\"row\" fxLayoutAlign=\"center center\">\r\n        <button mat-raised-button color=\"primary\" (click)=\"scrollToDemos()\">View demos</button>\r\n        <a mat-raised-button color=\"accent\" href=\"https://themeforest.net/item/gradus-angular-5-material-design-admin-template/21241729\" target=\"blank\">Purchase now</a>\r\n    </div>\r\n</div>\r\n<div class=\"container\">\r\n    <h2 class=\"muted-text\">Check out our demo styles</h2>\r\n    <p class=\"muted-text desc\">Fully responsive, organized folder structure, clean & customizable code, easy to use and much more...</p>\r\n    <div fxLayout=\"row wrap\" class=\"py-1\">\r\n        <div fxFlex=\"100\" fxFlex.gt-sm=\"50\" class=\"demo\">\r\n            <p class=\"text\">Vertical default menu</p>\r\n            <a routerLink=\"/\" (click)=\"changeLayout('vertical','default', false)\" class=\"link\">\r\n                <img src=\"assets/img/landing/vertical-default.jpg\">\r\n            </a>\r\n        </div>\r\n        <div fxFlex=\"100\" fxFlex.gt-sm=\"50\" class=\"demo\">\r\n            <p class=\"text\">Horizontal default menu</p>\r\n            <a routerLink=\"/\" (click)=\"changeLayout('horizontal','default', false)\" class=\"link\">\r\n                <img src=\"assets/img/landing/horizontal-default.jpg\">\r\n            </a>\r\n        </div>\r\n        <div fxFlex=\"100\" fxFlex.gt-sm=\"50\" class=\"demo\">\r\n            <p class=\"text\">Vertical compact menu</p>\r\n            <a routerLink=\"/\" (click)=\"changeLayout('vertical','compact', false)\" class=\"link\">\r\n                <img src=\"assets/img/landing/vertical-compact.jpg\">\r\n            </a>\r\n        </div>\r\n        <div fxFlex=\"100\" fxFlex.gt-sm=\"50\" class=\"demo\">\r\n            <p class=\"text\">Horizontal compact menu</p>\r\n            <a routerLink=\"/\" (click)=\"changeLayout('horizontal','compact', false)\" class=\"link\">\r\n                <img src=\"assets/img/landing/horizontal-compact.jpg\">\r\n            </a>\r\n        </div>\r\n        <div fxFlex=\"100\" fxFlex.gt-sm=\"50\" class=\"demo\">\r\n            <p class=\"text\">Vertical mini menu</p>\r\n            <a routerLink=\"/\" (click)=\"changeLayout('vertical','mini', false)\" class=\"link\">\r\n                <img src=\"assets/img/landing/vertical-mini.jpg\">\r\n            </a>\r\n        </div>\r\n        <div fxFlex=\"100\" fxFlex.gt-sm=\"50\" class=\"demo\">\r\n            <p class=\"text\">Horizontal mini menu</p>\r\n            <a routerLink=\"/\" (click)=\"changeLayout('horizontal','mini', false)\" class=\"link\">\r\n                <img src=\"assets/img/landing/horizontal-mini.jpg\">\r\n            </a>\r\n        </div>\r\n        <div fxFlex=\"100\" fxFlex.gt-sm=\"50\" class=\"demo\">\r\n            <p class=\"text\">Vertical menu RTL</p>\r\n            <a routerLink=\"/\" (click)=\"changeLayout('vertical','default', true)\" class=\"link\">\r\n                <img src=\"assets/img/landing/vertical-rtl.jpg\">\r\n            </a>\r\n        </div>\r\n        <div fxFlex=\"100\" fxFlex.gt-sm=\"50\" class=\"demo\">\r\n            <p class=\"text\">Horizontal menu RTL</p>\r\n            <a routerLink=\"/\" (click)=\"changeLayout('horizontal','default', true)\" class=\"link\">\r\n                <img src=\"assets/img/landing/horizontal-rtl.jpg\">\r\n            </a>\r\n        </div>\r\n    </div>\r\n    <h2 class=\"muted-text\">Skins</h2>\r\n    <div fxLayout=\"row wrap\" class=\"py-1\">\r\n        <div fxFlex=\"100\" fxFlex.gt-sm=\"33.3\" class=\"demo\">\r\n            <a routerLink=\"/\" (click)=\"changeTheme('indigo-light')\" class=\"link\">\r\n                <img src=\"assets/img/landing/vertical-default.jpg\">\r\n            </a>\r\n        </div>\r\n        <div fxFlex=\"100\" fxFlex.gt-sm=\"33.3\" class=\"demo\">\r\n            <a routerLink=\"/\" (click)=\"changeTheme('teal-light')\" class=\"link\">\r\n                <img src=\"assets/img/landing/teal-light.jpg\">\r\n            </a>\r\n        </div>\r\n        <div fxFlex=\"100\" fxFlex.gt-sm=\"33.3\" class=\"demo\">\r\n            <a routerLink=\"/\" (click)=\"changeTheme('red-light')\" class=\"link\">\r\n                <img src=\"assets/img/landing/red-light.jpg\">\r\n            </a>\r\n        </div>\r\n        <div fxFlex=\"100\" fxFlex.gt-sm=\"33.3\" class=\"demo\">\r\n            <a routerLink=\"/\" (click)=\"changeTheme('blue-dark')\" class=\"link\">\r\n                <img src=\"assets/img/landing/blue-dark.jpg\">\r\n            </a>\r\n        </div>\r\n        <div fxFlex=\"100\" fxFlex.gt-sm=\"33.3\" class=\"demo\">\r\n            <a routerLink=\"/\" (click)=\"changeTheme('green-dark')\" class=\"link\">\r\n                <img src=\"assets/img/landing/green-dark.jpg\">\r\n            </a>\r\n        </div>\r\n        <div fxFlex=\"100\" fxFlex.gt-sm=\"33.3\" class=\"demo\">\r\n            <a routerLink=\"/\" (click)=\"changeTheme('pink-dark')\" class=\"link\">\r\n                <img src=\"assets/img/landing/pink-dark.jpg\">\r\n            </a>\r\n        </div>\r\n    </div>\r\n</div>\r\n<div class=\"bg-primary w-100\">\r\n    <div fxLayout.xs=\"column\" fxLayout.gt-xs=\"row wrap\" fxLayoutAlign=\"space-between center\" class=\"about-me-footer\">\r\n        <span>Copyright �2018 All Rights Reserved</span>\r\n        <span>made by <a mat-button href=\"https://themeforest.net/user/theme_season/portfolio\" target=\"blank\">ThemeSeason</a></span>\r\n    </div>\r\n</div>"
+
+/***/ }),
+
+/***/ "./ClientApp/app/pages/about-me/about-me.component.scss":
+/***/ (function(module, exports) {
+
+module.exports = ".about-me-header {\n  position: relative;\n  color: #fff;\n  height: 520px;\n  text-align: center; }\n  .about-me-header:before {\n    content: \"\";\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n    right: 0;\n    height: 520px;\n    background-color: #242424;\n    background-image: url('header.6db18e5f8cfcdbdf8394.jpg');\n    background-repeat: no-repeat;\n    background-size: cover;\n    background-position-y: center;\n    z-index: -1; }\n  .about-me-header p {\n    margin-bottom: 1rem; }\n  .about-me-header .logo {\n    font-size: 48px; }\n  .about-me-header .intro-text {\n    font-size: 36px; }\n  .about-me-header .desc {\n    font-size: 16px;\n    font-weight: 300;\n    letter-spacing: 0.03rem; }\n  .about-me-header .mat-raised-button {\n    margin: 0 14px; }\n  .container {\n  max-width: 1200px;\n  margin: 0 auto;\n  padding: 16px 32px;\n  text-align: center; }\n  .container h2 {\n    font-size: 2rem; }\n  .container .desc {\n    font-size: 1.25rem; }\n  .container .demo {\n    padding: 16px; }\n  .container .demo .text {\n      font-size: 16px;\n      text-transform: uppercase;\n      margin-bottom: 1rem; }\n  .container .demo .link {\n      display: block; }\n  .container .demo .link img {\n        width: 100%;\n        -webkit-box-shadow: 0px 1px 5px 1px #999;\n                box-shadow: 0px 1px 5px 1px #999;\n        -webkit-transition: .2s;\n        transition: .2s; }\n  .container .demo .link img:hover {\n          -webkit-box-shadow: 0px 1px 5px 5px #999;\n                  box-shadow: 0px 1px 5px 5px #999; }\n  .about-me-footer {\n  max-width: 1200px;\n  margin: 0 auto;\n  padding: 16px; }\n  @media (max-width: 767px) {\n  .about-me-header .logo {\n    font-size: 36px; }\n  .about-me-header .intro-text {\n    font-size: 24px; } }\n"
+
+/***/ }),
+
+/***/ "./ClientApp/app/pages/about-me/about-me.component.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
+var AboutMeComponent = /** @class */ (function () {
+    function AboutMeComponent() {
+        this.myStyle = {};
+        this.myParams = {};
+        this.width = 800;
+        this.height = 80;
+    }
+    AboutMeComponent.prototype.ngOnInit = function () {
+        this.myStyle = {
+            'position': 'fixed',
+            'width': '100%',
+            'height': '100%',
+            'z-index': -1,
+            'top': 0,
+            'left': 0,
+            'right': 0,
+            'bottom': 0,
+        };
+        this.myParams = {
+            particles: {
+                number: {
+                    value: 80,
+                    density: {
+                        enable: true,
+                        value_area: 800
+                    }
+                },
+                color: {
+                    value: '#ffffff'
+                },
+                shape: {
+                    type: 'circle',
+                    stroke: {
+                        width: 0,
+                        color: "#000"
+                    }, image: {
+                        src: "img/github.svg",
+                        width: 100,
+                        height: 100
+                    },
+                    polygon: {
+                        nb_sides: 5
+                    }
+                },
+                opacity: {
+                    value: 0.5,
+                    random: false,
+                    anim: {
+                        enable: false,
+                        speed: 1,
+                        opacity_min: 0.1,
+                        sync: false
+                    }
+                }, size: {
+                    value: 3,
+                    random: true,
+                    anim: {
+                        enable: true,
+                        speed: 40,
+                        size_min: 0.1,
+                        sync: false
+                    }
+                },
+                line_linked: {
+                    enable: true,
+                    distance: 150,
+                    color: "#ffffff",
+                    opacity: 0.4,
+                    width: 1
+                },
+                move: {
+                    enable: true,
+                    speed: 6,
+                    direction: "none",
+                    random: false,
+                    straight: false,
+                    out_mode: "out",
+                    bounce: false,
+                    attract: {
+                        enable: false,
+                        rotateX: 600,
+                        rotateY: 1200
+                    }
+                },
+                interactivity: {
+                    detect_on: "window",
+                    events: {
+                        onhover: {
+                            enable: false,
+                            mode: "bubble"
+                        },
+                        onclick: {
+                            enable: false,
+                            mode: "repulse"
+                        },
+                        resize: true
+                    },
+                    modes: {
+                        grab: {
+                            distance: 400,
+                            line_linked: {
+                                opacity: 1
+                            }
+                        },
+                        bubble: {
+                            distance: 400,
+                            size: 40,
+                            duration: 2,
+                            opacity: 8,
+                            speed: 3
+                        },
+                        repulse: {
+                            distance: 200,
+                            duration: 0.4
+                        },
+                        push: {
+                            particles_nb: 4
+                        },
+                        remove: {
+                            particles_nb: 2
+                        }
+                    }
+                },
+                retina_detect: true
+            }
+        };
+    };
+    AboutMeComponent = __decorate([
+        core_1.Component({
+            selector: 'app-about-me',
+            template: __webpack_require__("./ClientApp/app/pages/about-me/about-me.component.html"),
+            styles: [__webpack_require__("./ClientApp/app/pages/about-me/about-me.component.scss")]
+        }),
+        __metadata("design:paramtypes", [])
+    ], AboutMeComponent);
+    return AboutMeComponent;
+}());
+exports.AboutMeComponent = AboutMeComponent;
 
 
 /***/ }),
@@ -506,7 +689,7 @@ exports.NotFoundComponent = NotFoundComponent;
 /***/ "./ClientApp/app/pages/pages.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<mat-sidenav-container>\r\n    <mat-sidenav *ngIf=\"settings.menu == 'vertical'\" [opened]=\"settings.sidenavIsOpened\" [mode]=\"(settings.sidenavIsPinned) ? 'side' : 'over'\" #sidenav class=\"sidenav mat-elevation-z6\">\r\n        <app-sidenav></app-sidenav>\r\n    </mat-sidenav>\r\n    <mat-sidenav-content perfectScrollbar [disabled]=\"settings.fixedHeader\" (psScrollY)=\"onPsScrollY($event)\">\r\n        <mat-toolbar color=\"primary\" class=\"flex-p-x\">\r\n            <div fxLayout=\"row\" fxLayoutAlign=\"space-between center\" class=\"w-100\">            \r\n                <div fxLayout=\"row\" fxLayoutAlign=\"center center\">                    \r\n                    <button *ngIf=\"settings.menu == 'vertical'\" mat-icon-button (click)=\"toggleSidenav()\">\r\n                        <mat-icon>menu</mat-icon>\r\n                    </button> \r\n                    <button fxShow=\"false\" fxShow.gt-xs *ngIf=\"settings.menu == 'vertical'\" mat-icon-button (click)=\"settings.sidenavUserBlock = !settings.sidenavUserBlock\">\r\n                        <mat-icon>person</mat-icon>\r\n                    </button> \r\n                    <a *ngIf=\"settings.menu == 'horizontal'\" mat-raised-button color=\"accent\" routerLink=\"/\" (click)=\"closeSubMenus()\" class=\"small-logo\">G</a>\r\n                    <a *ngIf=\"settings.menu == 'horizontal'\" class=\"logo\" routerLink=\"/\" (click)=\"closeSubMenus()\">GRADUS</a>  \r\n                </div>            \r\n                <div fxLayout=\"row\" fxLayoutAlign=\"end center\">\r\n                    <div fxLayout=\"row\" fxLayoutAlign=\"start center\" fxShow=\"false\" fxShow.gt-xs class=\"search-bar\">\r\n                        <form method=\"get\">\r\n                            <input type=\"text\" placeholder=\"Type to search...\" class=\"mat-elevation-z3\"  [class.show]=\"toggleSearchBar\">\r\n                            <button mat-icon-button (click)=\"toggleSearchBar = !toggleSearchBar\" type=\"button\">\r\n                                <mat-icon>search</mat-icon>\r\n                            </button> \r\n                        </form>\r\n                    </div>                \r\n                    <app-flags-menu fxShow=\"false\" fxShow.gt-sm></app-flags-menu>\r\n                    <app-fullscreen></app-fullscreen> \r\n                    <app-applications fxShow=\"false\" fxShow.gt-sm></app-applications>\r\n                    <app-messages fxShow=\"false\" fxShow.gt-xs></app-messages>\r\n                    <app-user-menu></app-user-menu> \r\n                </div>\r\n            </div>\r\n        </mat-toolbar>\r\n\r\n        <mat-toolbar color=\"primary\" *ngIf=\"settings.menu == 'horizontal'\" \r\n            class=\"horizontal-menu flex-p-x transition-2\" \r\n            [class.sticky]=\"isStickyMenu\" \r\n            [class.fixed-top]=\"!settings.fixedHeader\">\r\n            <div fxLayout=\"row\" fxLayoutAlign=\"center center\" class=\"w-100\">            \r\n                <app-horizontal-menu [menuParentId]=\"0\"></app-horizontal-menu>\r\n            </div>            \r\n        </mat-toolbar>\r\n\r\n        <div id=\"main-content\" class=\"inner-sidenav-content transition-2\" perfectScrollbar [disabled]=\"!settings.fixedHeader\" (psScrollY)=\"onPsScrollY($event)\" [class.horizontal-menu-hidden]=\"isStickyMenu\"> \r\n            <app-breadcrumb></app-breadcrumb>\r\n            <router-outlet></router-outlet>    \r\n        </div>\r\n\r\n\r\n        <div fxLayout=\"row\" fxLayoutAlign=\"center center\" class=\"options-icon\" (click)=\"options.toggle()\">\r\n            <mat-icon>settings</mat-icon>\r\n        </div>\r\n\r\n        <div *ngIf=\"showBackToTop\" fxLayout=\"row\" fxLayoutAlign=\"center center\" class=\"back-to-top transition-2\" (click)=\"scrollToTop();\">\r\n            <mat-icon>arrow_upward</mat-icon>\r\n        </div>\r\n\r\n    </mat-sidenav-content>\r\n    \r\n    <mat-sidenav #options position=\"end\" class=\"options\">        \r\n       \r\n        <div fxLayout=\"row\" fxLayoutAlign=\"center center\" class=\"control mat-elevation-z1\">\r\n            <h2>Settings</h2>\r\n        </div>  \r\n\r\n        <div perfectScrollbar>\r\n\r\n            <div fxLayout=\"column\" class=\"control\">\r\n                <h4>Layout</h4>        \r\n                <div fxLayout=\"row\" fxLayoutAlign=\"space-between center\">\r\n                    <span>Fixed header</span>\r\n                    <mat-slide-toggle [checked]=\"settings.fixedHeader\" (change)=\"settings.fixedHeader = !settings.fixedHeader\" labelPosition=\"before\"></mat-slide-toggle>\r\n                </div>                \r\n                <div fxLayout=\"row\" fxLayoutAlign=\"space-between center\">\r\n                    <span>RTL</span>\r\n                    <mat-slide-toggle [checked]=\"settings.rtl\" (change)=\"settings.rtl = !settings.rtl\" labelPosition=\"before\"></mat-slide-toggle>\r\n                </div>\r\n            </div>\r\n\r\n            <div fxLayout=\"column\" class=\"control\">\r\n                <h4>Choose menu</h4>\r\n                <mat-radio-group [(ngModel)]=\"menuOption\" (change)=\"chooseMenu()\">\r\n                    <mat-radio-button *ngFor=\"let menu of menus\" [value]=\"menu\">{{menu}}</mat-radio-button>\r\n                </mat-radio-group>\r\n            </div>\r\n\r\n            <div fxLayout=\"column\" class=\"control\">\r\n                <h4>Choose menu type</h4>\r\n                <mat-radio-group [(ngModel)]=\"menuTypeOption\" (change)=\"chooseMenuType()\">\r\n                    <mat-radio-button *ngFor=\"let menuType of menuTypes\" [value]=\"menuType\">{{menuType}}</mat-radio-button>\r\n                </mat-radio-group>\r\n            </div>\r\n\r\n            <div fxLayout=\"column\" class=\"control\">\r\n                <h4>Choose theme skin</h4>        \r\n                <div fxLayout=\"row\" fxLayoutAlign=\"space-around center\"> \r\n                    <div class=\"skin-primary indigo-light\" (click)=\"changeTheme('indigo-light')\"><div class=\"skin-secondary\"></div></div>  \r\n                    <div class=\"skin-primary teal-light\" (click)=\"changeTheme('teal-light')\"><div class=\"skin-secondary\"></div></div>  \r\n                    <div class=\"skin-primary red-light\" (click)=\"changeTheme('red-light')\"><div class=\"skin-secondary\"></div></div>  \r\n                    <div class=\"skin-primary blue-dark\" (click)=\"changeTheme('blue-dark')\"><div class=\"skin-secondary\"></div></div>  \r\n                    <div class=\"skin-primary green-dark\" (click)=\"changeTheme('green-dark')\"><div class=\"skin-secondary\"></div></div>  \r\n                    <div class=\"skin-primary pink-dark\" (click)=\"changeTheme('pink-dark')\"><div class=\"skin-secondary\"></div></div>  \r\n                </div>\r\n            </div>\r\n\r\n            <div fxLayout=\"column\" class=\"control\">\r\n                <h4>Sidenav options</h4>\r\n                <div fxLayout=\"row\" fxLayoutAlign=\"space-between center\">\r\n                    <span>Opened sidenav</span>\r\n                    <mat-slide-toggle [checked]=\"settings.sidenavIsOpened\" (change)=\"settings.sidenavIsOpened = !settings.sidenavIsOpened\" labelPosition=\"before\"></mat-slide-toggle>\r\n                </div>\r\n                <div fxLayout=\"row\" fxLayoutAlign=\"space-between center\">\r\n                    <span>Pinned sidenav</span>\r\n                    <mat-slide-toggle [checked]=\"settings.sidenavIsPinned\" (change)=\"settings.sidenavIsPinned = !settings.sidenavIsPinned\" labelPosition=\"before\"></mat-slide-toggle>\r\n                </div>\r\n                <div fxLayout=\"row\" fxLayoutAlign=\"space-between center\">\r\n                    <span>Sidenav user info</span>\r\n                    <mat-slide-toggle [checked]=\"settings.sidenavUserBlock\" (change)=\"settings.sidenavUserBlock = !settings.sidenavUserBlock\" labelPosition=\"before\"></mat-slide-toggle>\r\n                </div>\r\n            </div>\r\n\r\n        </div>\r\n\r\n    </mat-sidenav>\r\n\r\n</mat-sidenav-container>"
+module.exports = "<mat-sidenav-container>\r\n    <mat-sidenav *ngIf=\"settings.menu == 'vertical'\" [opened]=\"settings.sidenavIsOpened\" [mode]=\"(settings.sidenavIsPinned) ? 'side' : 'over'\" #sidenav class=\"sidenav mat-elevation-z6\">\r\n        <app-sidenav></app-sidenav>\r\n    </mat-sidenav>\r\n    <mat-sidenav-content perfectScrollbar [disabled]=\"settings.fixedHeader\" (psScrollY)=\"onPsScrollY($event)\">\r\n        <mat-toolbar color=\"primary\" class=\"flex-p-x\">\r\n            <div fxLayout=\"row\" fxLayoutAlign=\"space-between center\" class=\"w-100\">            \r\n                <div fxLayout=\"row\" fxLayoutAlign=\"center center\">                    \r\n                    <button *ngIf=\"settings.menu == 'vertical'\" mat-icon-button (click)=\"toggleSidenav()\">\r\n                        <mat-icon>menu</mat-icon>\r\n                    </button> \r\n                    <button fxShow=\"false\" fxShow.gt-xs *ngIf=\"settings.menu == 'vertical'\" mat-icon-button (click)=\"settings.sidenavUserBlock = !settings.sidenavUserBlock\">\r\n                        <mat-icon>person</mat-icon>\r\n                    </button> \r\n                    <a *ngIf=\"settings.menu == 'horizontal'\" color=\"accent\" routerLink=\"/\" (click)=\"closeSubMenus()\" class=\"small-logo\"><img src=\"{{settings.logoShape}}\" alt=\"HalcyonPattern\" /></a>\r\n                    <a *ngIf=\"settings.menu == 'horizontal'\" class=\"logo\" routerLink=\"/\" (click)=\"closeSubMenus()\"><img src=\"{{settings.logoText}}\" alt=\"HalcyonPattern\" /></a>  \r\n                </div>            \r\n                <div fxLayout=\"row\" fxLayoutAlign=\"end center\">\r\n                    <!--<div fxLayout=\"row\" fxLayoutAlign=\"start center\" fxShow=\"false\" fxShow.gt-xs class=\"search-bar\">\r\n                        <form method=\"get\">\r\n                            <input type=\"text\" placeholder=\"Type to search...\" class=\"mat-elevation-z3\"  [class.show]=\"toggleSearchBar\">\r\n                            <button mat-icon-button (click)=\"toggleSearchBar = !toggleSearchBar\" type=\"button\">\r\n                                <mat-icon>search</mat-icon>\r\n                            </button> \r\n                        </form>\r\n                    </div>-->                \r\n                    <!--<app-flags-menu fxShow=\"false\" fxShow.gt-sm></app-flags-menu>-->\r\n                    <app-fullscreen></app-fullscreen> \r\n                    <!--<app-applications fxShow=\"false\" fxShow.gt-sm></app-applications>\r\n                    <app-messages fxShow=\"false\" fxShow.gt-xs></app-messages>-->\r\n                    <app-user-menu></app-user-menu> \r\n                </div>\r\n            </div>\r\n        </mat-toolbar>\r\n\r\n        <mat-toolbar color=\"primary\" *ngIf=\"settings.menu == 'horizontal'\" \r\n            class=\"horizontal-menu flex-p-x transition-2\" \r\n            [class.sticky]=\"isStickyMenu\" \r\n            [class.fixed-top]=\"!settings.fixedHeader\">\r\n            <div fxLayout=\"row\" fxLayoutAlign=\"center center\" class=\"w-100\">            \r\n                <app-horizontal-menu [menuParentId]=\"0\"></app-horizontal-menu>\r\n            </div>            \r\n        </mat-toolbar>\r\n\r\n        <div id=\"main-content\" class=\"inner-sidenav-content transition-2\" perfectScrollbar [disabled]=\"!settings.fixedHeader\" (psScrollY)=\"onPsScrollY($event)\" [class.horizontal-menu-hidden]=\"isStickyMenu\"> \r\n            <app-breadcrumb></app-breadcrumb>\r\n            <router-outlet></router-outlet>    \r\n        </div>\r\n\r\n\r\n        <div fxLayout=\"row\" fxLayoutAlign=\"center center\" class=\"options-icon\" (click)=\"options.toggle()\">\r\n            <mat-icon>settings</mat-icon>\r\n        </div>\r\n\r\n        <div *ngIf=\"showBackToTop\" fxLayout=\"row\" fxLayoutAlign=\"center center\" class=\"back-to-top transition-2\" (click)=\"scrollToTop();\">\r\n            <mat-icon>arrow_upward</mat-icon>\r\n        </div>\r\n\r\n    </mat-sidenav-content>\r\n    \r\n    <mat-sidenav #options position=\"end\" class=\"options\">        \r\n       \r\n        <div fxLayout=\"row\" fxLayoutAlign=\"center center\" class=\"control mat-elevation-z1\">\r\n            <h2>Settings</h2>\r\n        </div>  \r\n\r\n        <div perfectScrollbar>\r\n\r\n            <div fxLayout=\"column\" class=\"control\">\r\n                <h4>Layout</h4>        \r\n                <div fxLayout=\"row\" fxLayoutAlign=\"space-between center\">\r\n                    <span>Fixed header</span>\r\n                    <mat-slide-toggle [checked]=\"settings.fixedHeader\" (change)=\"settings.fixedHeader = !settings.fixedHeader\" labelPosition=\"before\"></mat-slide-toggle>\r\n                </div>                \r\n                <div fxLayout=\"row\" fxLayoutAlign=\"space-between center\">\r\n                    <span>RTL</span>\r\n                    <mat-slide-toggle [checked]=\"settings.rtl\" (change)=\"settings.rtl = !settings.rtl\" labelPosition=\"before\"></mat-slide-toggle>\r\n                </div>\r\n            </div>\r\n\r\n            <div fxLayout=\"column\" class=\"control\">\r\n                <h4>Choose menu</h4>\r\n                <mat-radio-group [(ngModel)]=\"menuOption\" (change)=\"chooseMenu()\">\r\n                    <mat-radio-button *ngFor=\"let menu of menus\" [value]=\"menu\">{{menu}}</mat-radio-button>\r\n                </mat-radio-group>\r\n            </div>\r\n\r\n            <div fxLayout=\"column\" class=\"control\">\r\n                <h4>Choose menu type</h4>\r\n                <mat-radio-group [(ngModel)]=\"menuTypeOption\" (change)=\"chooseMenuType()\">\r\n                    <mat-radio-button *ngFor=\"let menuType of menuTypes\" [value]=\"menuType\">{{menuType}}</mat-radio-button>\r\n                </mat-radio-group>\r\n            </div>\r\n\r\n            <div fxLayout=\"column\" class=\"control\">\r\n                <h4>Choose theme skin</h4>        \r\n                <div fxLayout=\"row\" fxLayoutAlign=\"space-around center\"> \r\n                    <div class=\"skin-primary indigo-light\" (click)=\"changeTheme('indigo-light')\"><div class=\"skin-secondary\"></div></div>  \r\n                    <div class=\"skin-primary teal-light\" (click)=\"changeTheme('teal-light')\"><div class=\"skin-secondary\"></div></div>  \r\n                    <div class=\"skin-primary red-light\" (click)=\"changeTheme('red-light')\"><div class=\"skin-secondary\"></div></div>  \r\n                    <div class=\"skin-primary blue-dark\" (click)=\"changeTheme('blue-dark')\"><div class=\"skin-secondary\"></div></div>  \r\n                    <div class=\"skin-primary green-dark\" (click)=\"changeTheme('green-dark')\"><div class=\"skin-secondary\"></div></div>  \r\n                    <div class=\"skin-primary pink-dark\" (click)=\"changeTheme('pink-dark')\"><div class=\"skin-secondary\"></div></div>  \r\n                </div>\r\n            </div>\r\n\r\n            <div fxLayout=\"column\" class=\"control\">\r\n                <h4>Sidenav options</h4>\r\n                <div fxLayout=\"row\" fxLayoutAlign=\"space-between center\">\r\n                    <span>Opened sidenav</span>\r\n                    <mat-slide-toggle [checked]=\"settings.sidenavIsOpened\" (change)=\"settings.sidenavIsOpened = !settings.sidenavIsOpened\" labelPosition=\"before\"></mat-slide-toggle>\r\n                </div>\r\n                <div fxLayout=\"row\" fxLayoutAlign=\"space-between center\">\r\n                    <span>Pinned sidenav</span>\r\n                    <mat-slide-toggle [checked]=\"settings.sidenavIsPinned\" (change)=\"settings.sidenavIsPinned = !settings.sidenavIsPinned\" labelPosition=\"before\"></mat-slide-toggle>\r\n                </div>\r\n                <div fxLayout=\"row\" fxLayoutAlign=\"space-between center\">\r\n                    <span>Sidenav user info</span>\r\n                    <mat-slide-toggle [checked]=\"settings.sidenavUserBlock\" (change)=\"settings.sidenavUserBlock = !settings.sidenavUserBlock\" labelPosition=\"before\"></mat-slide-toggle>\r\n                </div>\r\n            </div>\r\n\r\n        </div>\r\n\r\n    </mat-sidenav>\r\n\r\n</mat-sidenav-container>"
 
 /***/ }),
 
@@ -738,12 +921,21 @@ var DataService = /** @class */ (function () {
         this.token = "";
         this.order = new order_1.Order();
         this.products = [];
+        this.camps = [];
     }
     DataService.prototype.loadProducts = function () {
         var _this = this;
         return this.http.get("/api/products")
             .map(function (data) {
             _this.products = data;
+            return true;
+        });
+    };
+    DataService.prototype.loadCamps = function () {
+        var _this = this;
+        return this.http.get("/api/camps")
+            .map(function (data) {
+            _this.camps = data;
             return true;
         });
     };
@@ -1451,117 +1643,76 @@ exports.MenuService = MenuService;
 Object.defineProperty(exports, "__esModule", { value: true });
 var menu_model_1 = __webpack_require__("./ClientApp/app/theme/components/menu/menu.model.ts");
 exports.verticalMenuItems = [
-    new menu_model_1.Menu(1, 'Dashboard', '/', null, 'dashboard', null, false, 0),
-    new menu_model_1.Menu(2, 'Users', '/users', null, 'supervisor_account', null, false, 0),
-    new menu_model_1.Menu(3, 'UI Features', null, null, 'computer', null, true, 0),
-    new menu_model_1.Menu(4, 'Buttons', '/ui/buttons', null, 'keyboard', null, false, 3),
-    new menu_model_1.Menu(5, 'Cards', '/ui/cards', null, 'card_membership', null, false, 3),
-    new menu_model_1.Menu(6, 'Lists', '/ui/lists', null, 'list', null, false, 3),
-    new menu_model_1.Menu(7, 'Grids', '/ui/grids', null, 'grid_on', null, false, 3),
-    new menu_model_1.Menu(8, 'Tabs', '/ui/tabs', null, 'tab', null, false, 3),
-    new menu_model_1.Menu(9, 'Expansion Panel', '/ui/expansion-panel', null, 'dns', null, false, 3),
-    new menu_model_1.Menu(10, 'Chips', '/ui/chips', null, 'label', null, false, 3),
-    new menu_model_1.Menu(11, 'Progress', '/ui/progress', null, 'data_usage', null, false, 3),
-    new menu_model_1.Menu(12, 'Dialog', '/ui/dialog', null, 'open_in_new', null, false, 3),
-    new menu_model_1.Menu(13, 'Tooltip', '/ui/tooltip', null, 'chat_bubble', null, false, 3),
-    new menu_model_1.Menu(14, 'Snackbar', '/ui/snack-bar', null, 'sms', null, false, 3),
-    new menu_model_1.Menu(15, 'Dynamic Menu', '/dynamic-menu', null, 'format_list_bulleted', null, false, 0),
-    new menu_model_1.Menu(16, 'Mailbox', '/mailbox', null, 'email', null, false, 0),
-    new menu_model_1.Menu(17, 'Chat', '/chat', null, 'chat', null, false, 0),
-    new menu_model_1.Menu(20, 'Form Controls', null, null, 'dvr', null, true, 0),
-    new menu_model_1.Menu(21, 'Autocomplete', '/form-controls/autocomplete', null, 'short_text', null, false, 20),
-    new menu_model_1.Menu(22, 'Checkbox', '/form-controls/checkbox', null, 'check_box', null, false, 20),
-    new menu_model_1.Menu(23, 'Datepicker', '/form-controls/datepicker', null, 'today', null, false, 20),
-    new menu_model_1.Menu(24, 'Form field', '/form-controls/form-field', null, 'view_stream', null, false, 20),
-    new menu_model_1.Menu(25, 'Input', '/form-controls/input', null, 'input', null, false, 20),
-    new menu_model_1.Menu(26, 'Radio button', '/form-controls/radio-button', null, 'radio_button_checked', null, false, 20),
-    new menu_model_1.Menu(27, 'Select', '/form-controls/select', null, 'playlist_add_check', null, false, 20),
-    new menu_model_1.Menu(28, 'Slider', '/form-controls/slider', null, 'tune', null, false, 20),
-    new menu_model_1.Menu(29, 'Slide toggle', '/form-controls/slide-toggle', null, 'star_half', null, false, 20),
-    new menu_model_1.Menu(30, 'Tables', null, null, 'view_module', null, true, 0),
-    new menu_model_1.Menu(31, 'Basic', '/tables/basic', null, 'view_column', null, false, 30),
-    new menu_model_1.Menu(32, 'Paging', '/tables/paging', null, 'last_page', null, false, 30),
-    new menu_model_1.Menu(33, 'Sorting', '/tables/sorting', null, 'sort', null, false, 30),
-    new menu_model_1.Menu(34, 'Filtering', '/tables/filtering', null, 'format_line_spacing', null, false, 30),
-    new menu_model_1.Menu(35, 'NGX DataTable', '/tables/ngx-table', null, 'view_array', null, false, 30),
-    new menu_model_1.Menu(40, 'Pages', null, null, 'library_books', null, true, 0),
-    new menu_model_1.Menu(43, 'Login', '/login', null, 'exit_to_app', null, false, 40),
-    new menu_model_1.Menu(44, 'Register', '/register', null, 'person_add', null, false, 40),
-    new menu_model_1.Menu(45, 'Blank', '/blank', null, 'check_box_outline_blank', null, false, 40),
-    new menu_model_1.Menu(46, 'Page Not Found', '/pagenotfound', null, 'error_outline', null, false, 40),
-    new menu_model_1.Menu(47, 'Error', '/error', null, 'warning', null, false, 40),
-    new menu_model_1.Menu(48, 'Landing', '/landing', null, 'filter', null, false, 40),
-    new menu_model_1.Menu(50, 'Schedule', '/schedule', null, 'event', null, false, 0),
-    new menu_model_1.Menu(66, 'Maps', null, null, 'map', null, true, 0),
-    new menu_model_1.Menu(67, 'Google Maps', '/maps/googlemaps', null, 'location_on', null, false, 66),
-    new menu_model_1.Menu(68, 'Leaflet Maps', '/maps/leafletmaps', null, 'my_location', null, false, 66),
-    new menu_model_1.Menu(70, 'Charts', null, null, 'multiline_chart', null, true, 0),
-    new menu_model_1.Menu(71, 'Bar Charts', '/charts/bar', null, 'insert_chart', null, false, 70),
-    new menu_model_1.Menu(72, 'Pie Charts', '/charts/pie', null, 'pie_chart', null, false, 70),
-    new menu_model_1.Menu(73, 'Line Charts', '/charts/line', null, 'show_chart', null, false, 70),
-    new menu_model_1.Menu(74, 'Bubble Charts', '/charts/bubble', null, 'bubble_chart', null, false, 70),
-    new menu_model_1.Menu(81, 'Drag & Drop', '/drag-drop', null, 'mouse', null, false, 0),
-    new menu_model_1.Menu(85, 'Material Icons', '/icons', null, 'insert_emoticon', null, false, 0),
-    new menu_model_1.Menu(140, 'Level 1', null, null, 'more_horiz', null, true, 0),
-    new menu_model_1.Menu(141, 'Level 2', null, null, 'folder_open', null, true, 140),
-    new menu_model_1.Menu(142, 'Level 3', null, null, 'folder_open', null, true, 141),
-    new menu_model_1.Menu(143, 'Level 4', null, null, 'folder_open', null, true, 142),
-    new menu_model_1.Menu(144, 'Level 5', null, 'http://themeseason.com', 'link', null, false, 143),
-    new menu_model_1.Menu(200, 'External Link', null, 'http://themeseason.com', 'open_in_new', '_blank', false, 0)
+    new menu_model_1.Menu(1, 'CodeCamps', null, null, 'code', null, true, 0),
+    new menu_model_1.Menu(2, 'Camps', '/camps', null, 'bug_report', null, false, 1),
+    new menu_model_1.Menu(3, 'Speakers', '/speakers', null, 'perm_contact_calendar', null, false, 1),
+    new menu_model_1.Menu(4, 'Talks', '/talks', null, 'record_voice_over', null, false, 1),
+    new menu_model_1.Menu(5, 'Schedule', '/schedule', null, 'event', null, false, 1),
+    new menu_model_1.Menu(6, 'Users', '/users', null, 'supervisor_account', null, false, 0),
+    new menu_model_1.Menu(7, 'Analytics Dashboard', '/', null, 'dashboard', null, false, 0),
+    new menu_model_1.Menu(8, 'About Me', '/about-me', null, 'work', null, false, 0)
 ];
 exports.horizontalMenuItems = [
-    new menu_model_1.Menu(1, 'Dashboard', '/', null, 'dashboard', null, false, 0),
-    new menu_model_1.Menu(2, 'Users', '/users', null, 'supervisor_account', null, false, 0),
-    new menu_model_1.Menu(3, 'UI Features', null, null, 'computer', null, true, 0),
-    new menu_model_1.Menu(4, 'Buttons', '/ui/buttons', null, 'keyboard', null, false, 3),
-    new menu_model_1.Menu(5, 'Cards', '/ui/cards', null, 'card_membership', null, false, 3),
-    new menu_model_1.Menu(6, 'Lists', '/ui/lists', null, 'list', null, false, 3),
-    new menu_model_1.Menu(7, 'Grids', '/ui/grids', null, 'grid_on', null, false, 3),
-    new menu_model_1.Menu(8, 'Tabs', '/ui/tabs', null, 'tab', null, false, 3),
-    new menu_model_1.Menu(9, 'Expansion Panel', '/ui/expansion-panel', null, 'dns', null, false, 3),
-    new menu_model_1.Menu(10, 'Chips', '/ui/chips', null, 'label', null, false, 3),
-    new menu_model_1.Menu(11, 'Progress', '/ui/progress', null, 'data_usage', null, false, 3),
-    new menu_model_1.Menu(12, 'Dialog', '/ui/dialog', null, 'open_in_new', null, false, 3),
-    new menu_model_1.Menu(13, 'Tooltip', '/ui/tooltip', null, 'chat_bubble', null, false, 3),
-    new menu_model_1.Menu(14, 'Snackbar', '/ui/snack-bar', null, 'sms', null, false, 3),
-    new menu_model_1.Menu(16, 'Mailbox', '/mailbox', null, 'email', null, false, 40),
-    new menu_model_1.Menu(17, 'Chat', '/chat', null, 'chat', null, false, 40),
-    new menu_model_1.Menu(20, 'Form Controls', null, null, 'dvr', null, true, 0),
-    new menu_model_1.Menu(21, 'Autocomplete', '/form-controls/autocomplete', null, 'short_text', null, false, 20),
-    new menu_model_1.Menu(22, 'Checkbox', '/form-controls/checkbox', null, 'check_box', null, false, 20),
-    new menu_model_1.Menu(23, 'Datepicker', '/form-controls/datepicker', null, 'today', null, false, 20),
-    new menu_model_1.Menu(24, 'Form field', '/form-controls/form-field', null, 'view_stream', null, false, 20),
-    new menu_model_1.Menu(25, 'Input', '/form-controls/input', null, 'input', null, false, 20),
-    new menu_model_1.Menu(26, 'Radio button', '/form-controls/radio-button', null, 'radio_button_checked', null, false, 20),
-    new menu_model_1.Menu(27, 'Select', '/form-controls/select', null, 'playlist_add_check', null, false, 20),
-    new menu_model_1.Menu(28, 'Slider', '/form-controls/slider', null, 'tune', null, false, 20),
-    new menu_model_1.Menu(29, 'Slide toggle', '/form-controls/slide-toggle', null, 'star_half', null, false, 20),
-    new menu_model_1.Menu(30, 'Tables', null, null, 'view_module', null, true, 0),
-    new menu_model_1.Menu(31, 'Basic', '/tables/basic', null, 'view_column', null, false, 30),
-    new menu_model_1.Menu(32, 'Paging', '/tables/paging', null, 'last_page', null, false, 30),
-    new menu_model_1.Menu(33, 'Sorting', '/tables/sorting', null, 'sort', null, false, 30),
-    new menu_model_1.Menu(34, 'Filtering', '/tables/filtering', null, 'format_line_spacing', null, false, 30),
-    new menu_model_1.Menu(35, 'NGX DataTable', '/tables/ngx-table', null, 'view_array', null, false, 30),
-    new menu_model_1.Menu(70, 'Charts', null, null, 'multiline_chart', null, true, 0),
-    new menu_model_1.Menu(71, 'Bar Charts', '/charts/bar', null, 'insert_chart', null, false, 70),
-    new menu_model_1.Menu(72, 'Pie Charts', '/charts/pie', null, 'pie_chart', null, false, 70),
-    new menu_model_1.Menu(73, 'Line Charts', '/charts/line', null, 'show_chart', null, false, 70),
-    new menu_model_1.Menu(74, 'Bubble Charts', '/charts/bubble', null, 'bubble_chart', null, false, 70),
-    new menu_model_1.Menu(66, 'Maps', null, null, 'map', null, true, 70),
-    new menu_model_1.Menu(67, 'Google Maps', '/maps/googlemaps', null, 'location_on', null, false, 66),
-    new menu_model_1.Menu(68, 'Leaflet Maps', '/maps/leafletmaps', null, 'my_location', null, false, 66),
-    new menu_model_1.Menu(81, 'Drag & Drop', '/drag-drop', null, 'mouse', null, false, 3),
-    new menu_model_1.Menu(85, 'Material Icons', '/icons', null, 'insert_emoticon', null, false, 3),
-    new menu_model_1.Menu(40, 'Pages', null, null, 'library_books', null, true, 0),
-    new menu_model_1.Menu(43, 'Login', '/login', null, 'exit_to_app', null, false, 40),
-    new menu_model_1.Menu(44, 'Register', '/register', null, 'person_add', null, false, 40),
-    new menu_model_1.Menu(45, 'Blank', '/blank', null, 'check_box_outline_blank', null, false, 40),
-    new menu_model_1.Menu(46, 'Page Not Found', '/pagenotfound', null, 'error_outline', null, false, 40),
-    new menu_model_1.Menu(47, 'Error', '/error', null, 'warning', null, false, 40),
-    new menu_model_1.Menu(48, 'Landing', '/landing', null, 'filter', null, false, 40),
-    new menu_model_1.Menu(50, 'Schedule', '/schedule', null, 'event', null, false, 40),
-    new menu_model_1.Menu(200, 'External Link', null, 'http://themeseason.com', 'open_in_new', '_blank', false, 40)
+    new menu_model_1.Menu(1, 'CodeCamps', null, null, 'code', null, true, 0),
+    new menu_model_1.Menu(2, 'Camps', '/camps', null, 'bug_report', null, false, 1),
+    new menu_model_1.Menu(3, 'Speakers', '/speakers', null, 'perm_contact_calendar', null, false, 1),
+    new menu_model_1.Menu(4, 'Talks', '/talks', null, 'record_voice_over', null, false, 1),
+    new menu_model_1.Menu(5, 'Schedule', '/schedule', null, 'event', null, false, 1),
+    new menu_model_1.Menu(6, 'Users', '/users', null, 'supervisor_account', null, false, 0),
+    new menu_model_1.Menu(7, 'Analytics Dashboard', '/', null, 'dashboard', null, false, 0),
+    new menu_model_1.Menu(8, 'About Me', '/about-me', null, 'work', null, false, 0)
 ];
+//new Menu(1, 'Dashboard', '/', null, 'dashboard', null, false, 0),
+//    new Menu(2, 'Users', '/users', null, 'supervisor_account', null, false, 0),
+//    new Menu(3, 'UI Features', null, null, 'computer', null, true, 0),
+//    new Menu(4, 'Buttons', '/ui/buttons', null, 'keyboard', null, false, 3),
+//    new Menu(5, 'Cards', '/ui/cards', null, 'card_membership', null, false, 3),
+//    new Menu(6, 'Lists', '/ui/lists', null, 'list', null, false, 3),
+//    new Menu(7, 'Grids', '/ui/grids', null, 'grid_on', null, false, 3),
+//    new Menu(8, 'Tabs', '/ui/tabs', null, 'tab', null, false, 3),
+//    new Menu(9, 'Expansion Panel', '/ui/expansion-panel', null, 'dns', null, false, 3),
+//    new Menu(10, 'Chips', '/ui/chips', null, 'label', null, false, 3),
+//    new Menu(11, 'Progress', '/ui/progress', null, 'data_usage', null, false, 3),
+//    new Menu(12, 'Dialog', '/ui/dialog', null, 'open_in_new', null, false, 3),
+//    new Menu(13, 'Tooltip', '/ui/tooltip', null, 'chat_bubble', null, false, 3),
+//    new Menu(14, 'Snackbar', '/ui/snack-bar', null, 'sms', null, false, 3),
+//    new Menu(16, 'Mailbox', '/mailbox', null, 'email', null, false, 40),
+//    new Menu(17, 'Chat', '/chat', null, 'chat', null, false, 40),
+//    new Menu(20, 'Form Controls', null, null, 'dvr', null, true, 0),
+//    new Menu(21, 'Autocomplete', '/form-controls/autocomplete', null, 'short_text', null, false, 20),
+//    new Menu(22, 'Checkbox', '/form-controls/checkbox', null, 'check_box', null, false, 20),
+//    new Menu(23, 'Datepicker', '/form-controls/datepicker', null, 'today', null, false, 20),
+//    new Menu(24, 'Form field', '/form-controls/form-field', null, 'view_stream', null, false, 20),
+//    new Menu(25, 'Input', '/form-controls/input', null, 'input', null, false, 20),
+//    new Menu(26, 'Radio button', '/form-controls/radio-button', null, 'radio_button_checked', null, false, 20),
+//    new Menu(27, 'Select', '/form-controls/select', null, 'playlist_add_check', null, false, 20),
+//    new Menu(28, 'Slider', '/form-controls/slider', null, 'tune', null, false, 20),
+//    new Menu(29, 'Slide toggle', '/form-controls/slide-toggle', null, 'star_half', null, false, 20),
+//    new Menu(30, 'Tables', null, null, 'view_module', null, true, 0),
+//    new Menu(31, 'Basic', '/tables/basic', null, 'view_column', null, false, 30),
+//    new Menu(32, 'Paging', '/tables/paging', null, 'last_page', null, false, 30),
+//    new Menu(33, 'Sorting', '/tables/sorting', null, 'sort', null, false, 30),
+//    new Menu(34, 'Filtering', '/tables/filtering', null, 'format_line_spacing', null, false, 30),
+//    new Menu(35, 'NGX DataTable', '/tables/ngx-table', null, 'view_array', null, false, 30),
+//    new Menu(70, 'Charts', null, null, 'multiline_chart', null, true, 0),
+//    new Menu(71, 'Bar Charts', '/charts/bar', null, 'insert_chart', null, false, 70),
+//    new Menu(72, 'Pie Charts', '/charts/pie', null, 'pie_chart', null, false, 70),
+//    new Menu(73, 'Line Charts', '/charts/line', null, 'show_chart', null, false, 70),
+//    new Menu(74, 'Bubble Charts', '/charts/bubble', null, 'bubble_chart', null, false, 70),
+//    new Menu(66, 'Maps', null, null, 'map', null, true, 70),
+//    new Menu(67, 'Google Maps', '/maps/googlemaps', null, 'location_on', null, false, 66),
+//    new Menu(68, 'Leaflet Maps', '/maps/leafletmaps', null, 'my_location', null, false, 66),
+//    new Menu(81, 'Drag & Drop', '/drag-drop', null, 'mouse', null, false, 3),
+//    new Menu(85, 'Material Icons', '/icons', null, 'insert_emoticon', null, false, 3),
+//    new Menu(40, 'Pages', null, null, 'library_books', null, true, 0),
+//    new Menu(43, 'Login', '/login', null, 'exit_to_app', null, false, 40),
+//    new Menu(44, 'Register', '/register', null, 'person_add', null, false, 40),
+//    new Menu(45, 'Blank', '/blank', null, 'check_box_outline_blank', null, false, 40),
+//    new Menu(46, 'Page Not Found', '/pagenotfound', null, 'error_outline', null, false, 40),
+//    new Menu(47, 'Error', '/error', null, 'warning', null, false, 40),
+//    new Menu(48, 'Landing', '/landing', null, 'filter', null, false, 40),
+//    new Menu(50, 'Schedule', '/schedule', null, 'event', null, false, 40),
+//    new Menu(200, 'External Link', null, 'http://themeseason.com', 'open_in_new', '_blank', false, 40) 
 
 
 /***/ }),
@@ -1879,7 +2030,7 @@ exports.MessagesService = MessagesService;
 /***/ "./ClientApp/app/theme/components/sidenav/sidenav.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<mat-toolbar color=\"primary\" [fxLayoutAlign]=\"(settings.menuType != 'mini') ? 'space-between center' : 'center center'\" class=\"sidenav-header\">\r\n    <a mat-raised-button color=\"accent\" routerLink=\"/\" (click)=\"closeSubMenus()\" class=\"small-logo\"><img src=\"img/logo_size_icon.jpg\" alt=\"HalcyonPattern\"/></a>\r\n    <a *ngIf=\"settings.menuType == 'default'\" class=\"logo\" routerLink=\"/\" (click)=\"closeSubMenus()\">HalcyonPattern</a> \r\n    <svg *ngIf=\"settings.menuType != 'mini'\" class=\"pin\" (click)=\"settings.sidenavIsPinned = !settings.sidenavIsPinned\">\r\n        <path *ngIf=\"!settings.sidenavIsPinned\" d=\"M16,12V4H17V2H7V4H8V12L6,14V16H11.2V22H12.8V16H18V14L16,12Z\" />\r\n        <path *ngIf=\"settings.sidenavIsPinned\" d=\"M2,5.27L3.28,4L20,20.72L18.73,22L12.8,16.07V22H11.2V16H6V14L8,12V11.27L2,5.27M16,12L18,14V16H17.82L8,6.18V4H7V2H17V4H16V12Z\" />\r\n    </svg>  \r\n</mat-toolbar>\r\n\r\n<div fxLayout=\"column\" fxLayoutAlign=\"center center\" class=\"user-block transition-2\" [class.show]=\"settings.sidenavUserBlock\"> \r\n    <div [fxLayout]=\"(settings.menuType != 'default') ? 'column' : 'row'\" \r\n         [fxLayoutAlign]=\"(settings.menuType != 'default') ? 'center center' : 'space-around center'\" class=\"user-info-wrapper\">\r\n        <img [src]=\"userImage\" alt=\"user-image\">\r\n        <div class=\"user-info\">\r\n            <p class=\"name\">Tom Biagioni</p>\r\n            <p *ngIf=\"settings.menuType == 'default'\" class=\"position\">Web developer <br> <small class=\"muted-text\">Member since May. 2016</small></p>\r\n        </div>\r\n    </div>\r\n    <div *ngIf=\"settings.menuType != 'mini'\" fxLayout=\"row\" fxLayoutAlign=\"space-around center\" class=\"w-100 muted-text\">\r\n        <button mat-icon-button><mat-icon>person_outline</mat-icon></button>\r\n        <a mat-icon-button routerLink=\"/mailbox\">\r\n            <mat-icon>mail_outline</mat-icon>\r\n        </a>\r\n        <a mat-icon-button routerLink=\"/login\">\r\n            <mat-icon>power_settings_new</mat-icon>\r\n        </a>\r\n    </div>\r\n</div>\r\n\r\n<div id=\"sidenav-menu-outer\" class=\"sidenav-menu-outer\" perfectScrollbar [class.user-block-show]=\"settings.sidenavUserBlock\">    \r\n    <span *ngIf=\"!menuItems\">loading....</span>\r\n    <app-vertical-menu [menuItems]=\"menuItems\" [menuParentId]=\"0\"></app-vertical-menu> \r\n</div>"
+module.exports = "<mat-toolbar color=\"primary\" [fxLayoutAlign]=\"(settings.menuType != 'mini') ? 'space-between center' : 'center center'\" class=\"sidenav-header\">\r\n    <a color=\"accent\" routerLink=\"/\" (click)=\"closeSubMenus()\" class=\"small-logo\"><img src=\"{{settings.logoShape}}\" alt=\"HalcyonPattern\" /></a>\r\n    <a *ngIf=\"settings.menuType == 'default'\" class=\"logo\" routerLink=\"/\" (click)=\"closeSubMenus()\"> <img src=\"{{settings.logoText}}\" alt=\"HalcyonPattern\"/></a> \r\n    <svg *ngIf=\"settings.menuType != 'mini'\" class=\"pin\" (click)=\"settings.sidenavIsPinned = !settings.sidenavIsPinned\">\r\n        <path *ngIf=\"!settings.sidenavIsPinned\" d=\"M16,12V4H17V2H7V4H8V12L6,14V16H11.2V22H12.8V16H18V14L16,12Z\" />\r\n        <path *ngIf=\"settings.sidenavIsPinned\" d=\"M2,5.27L3.28,4L20,20.72L18.73,22L12.8,16.07V22H11.2V16H6V14L8,12V11.27L2,5.27M16,12L18,14V16H17.82L8,6.18V4H7V2H17V4H16V12Z\" />\r\n    </svg>  \r\n</mat-toolbar>\r\n\r\n<div fxLayout=\"column\" fxLayoutAlign=\"center center\" class=\"user-block transition-2\" [class.show]=\"settings.sidenavUserBlock\"> \r\n    <div [fxLayout]=\"(settings.menuType != 'default') ? 'column' : 'row'\" \r\n         [fxLayoutAlign]=\"(settings.menuType != 'default') ? 'center center' : 'space-around center'\" class=\"user-info-wrapper\">\r\n        <img [src]=\"userImage\" alt=\"user-image\">\r\n        <div class=\"user-info\">\r\n            <p class=\"name\">Tom Biagioni</p>\r\n            <p *ngIf=\"settings.menuType == 'default'\" class=\"position\">Web developer <br> <small class=\"muted-text\">Member since May. 2016</small></p>\r\n        </div>\r\n    </div>\r\n    <div *ngIf=\"settings.menuType != 'mini'\" fxLayout=\"row\" fxLayoutAlign=\"space-around center\" class=\"w-100 muted-text\">\r\n        <button mat-icon-button><mat-icon>person_outline</mat-icon></button>\r\n        <a mat-icon-button routerLink=\"/mailbox\">\r\n            <mat-icon>mail_outline</mat-icon>\r\n        </a>\r\n        <a mat-icon-button routerLink=\"/login\">\r\n            <mat-icon>power_settings_new</mat-icon>\r\n        </a>\r\n    </div>\r\n</div>\r\n\r\n<div id=\"sidenav-menu-outer\" class=\"sidenav-menu-outer\" perfectScrollbar [class.user-block-show]=\"settings.sidenavUserBlock\">    \r\n    <span *ngIf=\"!menuItems\">loading....</span>\r\n    <app-vertical-menu [menuItems]=\"menuItems\" [menuParentId]=\"0\"></app-vertical-menu> \r\n</div>"
 
 /***/ }),
 
@@ -2113,7 +2264,7 @@ var ProfilePicturePipe = /** @class */ (function () {
     }
     ProfilePicturePipe.prototype.transform = function (input, ext) {
         if (ext === void 0) { ext = 'jpg'; }
-        return '../assets/img/profile/' + input + '.' + ext;
+        return 'img/profile/' + input + '.' + ext;
     };
     ProfilePicturePipe = __decorate([
         core_1.Pipe({ name: 'profilePicture' })

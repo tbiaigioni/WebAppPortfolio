@@ -12,7 +12,7 @@ var ProfilePicturePipe = /** @class */ (function () {
     }
     ProfilePicturePipe.prototype.transform = function (input, ext) {
         if (ext === void 0) { ext = 'jpg'; }
-        return '../assets/img/profile/' + input + '.' + ext;
+        return 'img/profile/' + input + '.' + ext;
     };
     ProfilePicturePipe = __decorate([
         core_1.Pipe({ name: 'profilePicture' })

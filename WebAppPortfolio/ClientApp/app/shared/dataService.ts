@@ -3,7 +3,9 @@ import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import 'rxjs/add/operator/map';
 import { Product } from "./product";
-import { Order,OrderItem } from "./order";
+import { Order, OrderItem } from "./order";
+import { Camp } from './camp';
+
 
 
 @Injectable()
@@ -15,11 +17,20 @@ export class DataService {
 
     public order: Order = new Order();
     public products: Product[] = [];
+    public camps: Camp[] = [];
 
     loadProducts(): Observable<boolean> {
         return this.http.get("/api/products")
             .map((data: any[]) => {
                 this.products = data;
+                return true;
+            });
+    } 
+
+    loadCamps(): Observable<boolean> {
+        return this.http.get("/api/camps")
+            .map((data: any[]) => {
+                this.camps = data;
                 return true;
             });
     } 

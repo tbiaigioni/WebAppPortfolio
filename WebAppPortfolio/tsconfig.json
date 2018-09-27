@@ -5,7 +5,7 @@
     "./wwwroot/ts",
     "./**/*.ts",
     "./ClientApp/**/*.ts"
-  ], 
+  ],
   "compilerOptions": {
     "outDir": "./wwwroot/ClientApp/out-tsc",
     "sourceMap": true,
@@ -20,6 +20,9 @@
     "lib": [
       "es2017",
       "dom"
+    ],
+    "types": [
+      "hammerjs"
     ]
   }
 }

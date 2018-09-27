@@ -15,11 +15,13 @@ var AppSettings = /** @class */ (function () {
         true, //fixedHeader
         true, //sidenavIsOpened
         true, //sidenavIsPinned  
-        true, //sidenavUserBlock 
+        false, //sidenavUserBlock 
         'vertical', //horizontal , vertical
         'default', //default, compact, mini
-        'green-dark', //indigo-light, teal-light, red-light, blue-dark, green-dark, pink-dark
-        false // true = rtl, false = ltr
+        'blue-dark', //indigo-light, teal-light, red-light, blue-dark, green-dark, pink-dark
+        false, // true = rtl, false = ltr
+        'img/white_logo_transparent_background_noShape_80px.png', //logoText path
+        'img/white_logo_transparent_background_noText_80px.png' //logoShape Path
         );
     }
     AppSettings = __decorate([

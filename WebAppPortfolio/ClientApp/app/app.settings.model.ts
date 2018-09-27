@@ -8,5 +8,7 @@
         public menu: string,
         public menuType: string,
         public theme: string,
-        public rtl: boolean) { }
+        public rtl: boolean,
+        public logoText: string,
+        public logoShape: string) { }
 }

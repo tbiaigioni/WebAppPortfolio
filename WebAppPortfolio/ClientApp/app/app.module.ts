@@ -28,7 +28,7 @@ import { SearchComponent } from './pages/search/search.component';
 import { NotFoundComponent } from './pages/errors/not-found/not-found.component';
 import { ErrorComponent } from './pages/errors/error/error.component';
 import { AppSettings } from './app.settings';
-
+import { ParticlesModule } from 'angular-particle';
 import { SidenavComponent } from './theme/components/sidenav/sidenav.component';
 import { VerticalMenuComponent } from './theme/components/menu/vertical-menu/vertical-menu.component';
 import { HorizontalMenuComponent } from './theme/components/menu/horizontal-menu/horizontal-menu.component';
@@ -38,7 +38,8 @@ import { FullScreenComponent } from './theme/components/fullscreen/fullscreen.co
 import { ApplicationsComponent } from './theme/components/applications/applications.component';
 import { MessagesComponent } from './theme/components/messages/messages.component';
 import { UserMenuComponent } from './theme/components/user-menu/user-menu.component';
-
+import { AboutMeComponent } from './pages/about-me/about-me.component';
+import 'hammerjs';
 
 
 
@@ -59,7 +60,8 @@ import { UserMenuComponent } from './theme/components/user-menu/user-menu.compon
         FullScreenComponent,
         ApplicationsComponent,
         MessagesComponent,
-        UserMenuComponent
+        UserMenuComponent,
+        AboutMeComponent
     ],
     imports: [
         BrowserModule,
@@ -73,6 +75,7 @@ import { UserMenuComponent } from './theme/components/user-menu/user-menu.compon
         CalendarModule.forRoot(),
         SharedModule,
         PipesModule,
+        ParticlesModule,
         routing
     ],
     providers: [

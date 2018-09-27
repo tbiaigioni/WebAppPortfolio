@@ -32,6 +32,7 @@ var search_component_1 = require("./pages/search/search.component");
 var not_found_component_1 = require("./pages/errors/not-found/not-found.component");
 var error_component_1 = require("./pages/errors/error/error.component");
 var app_settings_1 = require("./app.settings");
+var angular_particle_1 = require("angular-particle");
 var sidenav_component_1 = require("./theme/components/sidenav/sidenav.component");
 var vertical_menu_component_1 = require("./theme/components/menu/vertical-menu/vertical-menu.component");
 var horizontal_menu_component_1 = require("./theme/components/menu/horizontal-menu/horizontal-menu.component");
@@ -41,6 +42,8 @@ var fullscreen_component_1 = require("./theme/components/fullscreen/fullscreen.c
 var applications_component_1 = require("./theme/components/applications/applications.component");
 var messages_component_1 = require("./theme/components/messages/messages.component");
 var user_menu_component_1 = require("./theme/components/user-menu/user-menu.component");
+var about_me_component_1 = require("./pages/about-me/about-me.component");
+require("hammerjs");
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
@@ -61,7 +64,8 @@ var AppModule = /** @class */ (function () {
                 fullscreen_component_1.FullScreenComponent,
                 applications_component_1.ApplicationsComponent,
                 messages_component_1.MessagesComponent,
-                user_menu_component_1.UserMenuComponent
+                user_menu_component_1.UserMenuComponent,
+                about_me_component_1.AboutMeComponent
             ],
             imports: [
                 platform_browser_1.BrowserModule,
@@ -75,6 +79,7 @@ var AppModule = /** @class */ (function () {
                 angular_calendar_1.CalendarModule.forRoot(),
                 shared_module_1.SharedModule,
                 pipes_module_1.PipesModule,
+                angular_particle_1.ParticlesModule,
                 app_routing_1.routing
             ],
             providers: [

@@ -6,6 +6,8 @@ import { BlankComponent } from './pages/blank/blank.component';
 import { SearchComponent } from './pages/search/search.component';
 import { NotFoundComponent } from './pages/errors/not-found/not-found.component';
 import { ErrorComponent } from './pages/errors/error/error.component';
+import { AboutMeComponent } from './pages/about-me/about-me.component';
+
 
 export const routes: Routes = [
     {
@@ -25,10 +27,11 @@ export const routes: Routes = [
             { path: 'charts', loadChildren: 'app/pages/charts/charts.module#ChartsModule', data: { breadcrumb: 'Charts' } },
             { path: 'dynamic-menu', loadChildren: 'app/pages/dynamic-menu/dynamic-menu.module#DynamicMenuModule', data: { breadcrumb: 'Dynamic Menu' } },
             { path: 'blank', component: BlankComponent, data: { breadcrumb: 'Blank page' } },
-            { path: 'search', component: SearchComponent, data: { breadcrumb: 'Search' } }
+            { path: 'search', component: SearchComponent, data: { breadcrumb: 'Search' } },
+            { path: 'about-me', component: AboutMeComponent, data: { breadcrumb: 'About Me' } }
         ]
     },
-    { path: 'landing', loadChildren: 'app/pages/landing/landing.module#LandingModule' },
+    { path: '', loadChildren: 'app/pages/landing/landing.module#LandingModule' },
     { path: 'login', loadChildren: 'app/pages/login/login.module#LoginModule' },
     { path: 'register', loadChildren: 'app/pages/register/register.module#RegisterModule' },
     { path: 'error', component: ErrorComponent, data: { breadcrumb: 'Error' } },

@@ -19,12 +19,21 @@ var DataService = /** @class */ (function () {
         this.token = "";
         this.order = new order_1.Order();
         this.products = [];
+        this.camps = [];
     }
     DataService.prototype.loadProducts = function () {
         var _this = this;
         return this.http.get("/api/products")
             .map(function (data) {
             _this.products = data;
+            return true;
+        });
+    };
+    DataService.prototype.loadCamps = function () {
+        var _this = this;
+        return this.http.get("/api/camps")
+            .map(function (data) {
+            _this.camps = data;
             return true;
         });
     };
